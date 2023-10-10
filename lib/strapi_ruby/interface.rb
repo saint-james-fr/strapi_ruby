@@ -4,9 +4,10 @@ module StrapiRuby
       validate_options(options)
       @endpoint = build_endpoint(options)
       answer = @client.get(@endpoint)
-      formatted_data = format_data(answer.data, options)
+      data = format_data(answer.data, options)
+      meta = answer.meta
 
-      OpenStruct.new(data: formatted_data, meta: answer.meta)
+      build_open_struct(data, meta)
     end
 
     def post(options = {})
@@ -14,8 +15,10 @@ module StrapiRuby
       @endpoint = build_endpoint(options)
       body = options[:data]
       answer = @client.post(@endpoint, body)
+      data = answer.data
+      meta = answer.meta
 
-      OpenStruct.new(data: answer.data, meta: answer.meta)
+      build_open_struct(data, meta)
     end
 
     def put(options = {})
@@ -23,19 +26,33 @@ module StrapiRuby
       @endpoint = build_endpoint(options)
       body = options[:data]
       answer = @client.put(@endpoint, body)
+      data = answer.data
+      meta = answer.meta
 
-      OpenStruct.new(data: answer.data, meta: answer.meta)
+      build_open_struct(data, meta)
     end
 
     def delete(options = {})
       validate_options(options)
       @endpoint = build_endpoint(options)
       answer = @client.delete(@endpoint)
+      data = answer.data
+      meta = answer.meta
 
-      OpenStruct.new(data: answer.data, meta: answer.meta)
+      build_open_struct(data, meta)
     end
 
     private
+
+    def build_open_struct(data, meta)
+      # If user wants to see endpoint, we add it to the response
+      if options[:show_endpoint] || StrapiRuby.config.show_endpoint
+        raise TypeError, "Invalid argument type. Expected Boolean" unless options[:show_endpoint].is_a?(Boolean) || StrapiRuby.config.show_endpoint.is_a?(Boolean)
+        Openstruct.new(data: data, meta: meta, endpoint: @endpoint)
+      else
+        OpenStruct.new(data: data, meta: meta)
+      end
+    end
 
     def validate_options(options)
       raise ConfigurationError, ErrorMessage.missing_configuration if @config.nil?

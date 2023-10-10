@@ -9,6 +9,7 @@ def configure_strapi
     config.strapi_server_uri = ENV["STRAPI_SERVER_URI"]
     config.strapi_token = ENV["STRAPI_TOKEN"]
     config.convert_to_html = [:content]
+    config.show_endpoint = true
   end
 end
 
@@ -121,6 +122,10 @@ def test_delete_article
   StrapiRuby.delete(resource: "articles", id: id)
 end
 
+def test_show_endpoint
+  StrapiRuby.get(resource: "articles", show_endpoint: true).endpoint
+end
+
 # Main execution
 configure_strapi
 puts "\n\n"
@@ -142,6 +147,7 @@ tests = [
   # :test_populate,
   # :test_raw_query,
   # :test_404_endpoint,
+  :test_show_endpoint,
 ]
 
 tests.each do |test|

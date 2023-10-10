@@ -1,6 +1,11 @@
 module StrapiRuby
   class Config
-    attr_accessor :strapi_server_uri, :strapi_token, :faraday, :convert_to_html, :convert_to_datetime
+    attr_accessor :strapi_server_uri,
+                  :strapi_token,
+                  :faraday,
+                  :convert_to_html,
+                  :convert_to_datetime,
+                  :show_endpoint
 
     def initialize
       @strapi_server_uri = nil
@@ -8,6 +13,7 @@ module StrapiRuby
       @faraday = nil
       @convert_to_datetime = true
       @convert_to_html = []
+      @show_endpoint = false
     end
 
     def validate!

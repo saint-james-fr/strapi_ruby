@@ -71,7 +71,7 @@ And you're ready to fetch some data!
 
 ```ruby
 StrapiRuby.get(resource: :restaurants)
-# => http://localhost:1337/api/restaurants
+# => https://localhost:1337/api/restaurants
 ```
 
 ## Usage
@@ -374,6 +374,30 @@ StrapiRuby.get(resource: articles:, raw: "?fields=title&sort=createdAt:desc")
 
 You can pass more options in the config file
 
+### Show Endpoint
+
+This option is for accessing the resulting endpoint and with its query, this is useful for debugging. It defaults to `false`
+
+```ruby
+# Pass this as a parameter to the config block
+StrapiRuby.configure do |config|
+    #...
+    config.show_endpoint = true
+    #...
+  end
+
+# Or as an option to one of the API functions
+StrapiRuby.get(resource: :articles, show_endpoint: true)
+
+
+# You can access it in the answer
+
+StrapiRuby.get(resource: :articles, show_endpoint: true).endpoint
+# => https://localhost:1337/api/restaurants
+```
+
+Or directly in the options parameters
+
 ### DateTime Conversion
 
 By default, any `createdAt`, `publishedAt` and `updatedAt` fields in the answer will be recursively converted to `DateTime` instances, making it easy to use `#strftime` methods. See method documentation [here](https://ruby-doc.org/stdlib-2.6.1/libdoc/date/rdoc/DateTime.html#method-i-strftime).
@@ -401,7 +425,7 @@ StrapiRuby.configure do |config|
     #...
   end
 
-#Or as an option to one of the API functions
+# Or as an option to one of the API functions
 StrapiRuby.get(resource: :articles, fields: :body, convert_to_html: [:body])
 ```
 
