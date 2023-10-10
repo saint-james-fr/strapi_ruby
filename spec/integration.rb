@@ -8,7 +8,6 @@ def configure_strapi
   StrapiRuby.configure do |config|
     config.strapi_server_uri = ENV["STRAPI_SERVER_URI"]
     config.strapi_token = ENV["STRAPI_TOKEN"]
-    config.convert_to_html = [:content]
     config.show_endpoint = true
   end
 end

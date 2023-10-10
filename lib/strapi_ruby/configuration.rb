@@ -6,7 +6,7 @@ module StrapiRuby
 
     def configure
       yield(config)
-      config.validate!
+      config.call
       client
     end
 

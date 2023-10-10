@@ -1,7 +1,7 @@
 module StrapiRuby
   class Config
     include StrapiRuby::Validations
-    
+
     attr_accessor :strapi_server_uri,
                   :strapi_token,
                   :faraday,
@@ -18,15 +18,9 @@ module StrapiRuby
       @show_endpoint = false
     end
 
-    def validate!
+    def call
       validate_config(self)
-
-
-      
-      raise TypeError, "Invalid argument type. Expected Array. Got #{@convert_to_html.class.name}" unless @convert_to_html.is_a?(Array)
-      raise TypeError, "Invalid argument type. Expected Boolean" unless [true, false].include?(@show_endpoint)
-
-      # We convert to symbols if user passed strings
+      # We convert to symbols if user passed strings for convert_to_html options
       @convert_to_html.map!(&:to_sym)
     end
   end
