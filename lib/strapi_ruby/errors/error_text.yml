@@ -1,0 +1,2 @@
+missing_configuration: Config block missing. Configure plugin in /config/strapi_ruby.rb.
+missing_ressource: Ressource is missing.

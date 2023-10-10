@@ -1,0 +1,7 @@
+missing_configuration: >
+  StrapiRuby.configure do |config|
+    config.strapi_server_uri = 'https://example.com'
+    config.strapi_token = '123'
+  end
+missing_ressource: >
+  StrapiRuby.get(resource: "posts")
