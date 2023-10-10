@@ -30,7 +30,7 @@ module StrapiRuby
     end
 
     def validate_faraday_block(faraday)
-      raise TypeError, "Expected Proc. Got #{faraday.class.name}" if faraday.nil? && faraday.is_a?(Proc)
+      raise TypeError, "Expected Proc. Got #{faraday.class.name}" if !faraday.nil? && !faraday.is_a?(Proc)
     end
 
     def validate_mandatory_config_params(strapi_server_uri, strapi_token)
