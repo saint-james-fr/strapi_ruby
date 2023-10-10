@@ -35,10 +35,10 @@ module StrapiRuby
       data = format_data(answer.data, options)
       meta = answer.meta
 
-      build_open_struct(data, meta, options)
+      format_answer_in_open_struct(data, meta, options)
     end
 
-    def build_open_struct(data, meta, options = {})
+    def format_answer_in_open_struct(data, meta, options = {})
       if options[:show_endpoint] || StrapiRuby.config.show_endpoint
         OpenStruct.new(data: data, meta: meta, endpoint: @endpoint)
       else
