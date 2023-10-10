@@ -18,32 +18,58 @@ module StrapiRuby
       request(:delete, options)
     end
 
+    def escape_empty_answer(answer)
+      return answer.error.message if answer.data.nil? || answer.data.empty?
+      yield
+    end
+
     private
 
     def request(http_verb, options = {})
-      validate_options(options)
-      @endpoint = build_endpoint(options)
+      begin
+        validate_options(options)
+        @endpoint = build_endpoint(options)
+        answer = build_answer(http_verb, @endpoint, options)
+        data = format_data(answer.data, options)
+        meta = answer.meta
 
-      answer = if %i[get delete].include?(http_verb)
-          @client.public_send(http_verb, @endpoint)
-        else
-          validate_data_presence(options)
-          body = options[:data]
-          @client.public_send(http_verb, @endpoint, body)
-        end
-
-      data = format_data(answer.data, options)
-      meta = answer.meta
-
-      format_answer_in_open_struct(data, meta, options)
+        return_success_open_struct(data, meta, options)
+      rescue StrapiRuby::ClientError => e
+        return_error_open_struct(e, options)
+      rescue StrapiRuby::ConfigError => e
+        return_error_open_struct(e, options)
+      end
     end
 
-    def format_answer_in_open_struct(data, meta, options = {})
-      if options[:show_endpoint] || StrapiRuby.config.show_endpoint
-        OpenStruct.new(data: data, meta: meta, endpoint: @endpoint)
+    def build_answer(http_verb, endpoint, options)
+      if %i[get delete].include?(http_verb)
+        @client.public_send(http_verb, endpoint)
       else
-        OpenStruct.new(data: data, meta: meta)
+        validate_data_presence(options)
+        body = options[:data]
+        @client.public_send(http_verb, endpoint, body)
       end
+    end
+
+    def show_endpoint?(options)
+      options[:show_endpoint] || StrapiRuby.config.show_endpoint
+    end
+
+    def return_success_open_struct(data, meta, error = nil, options = {})
+      if show_endpoint?(options)
+        OpenStruct.new(data: data,
+                       meta: meta,
+                       endpoint: @endpoint).freeze
+      else
+        OpenStruct.new(data: data, meta: meta).freeze
+      end
+    end
+
+    def return_error_open_struct(error, options = {})
+      OpenStruct.new(error: OpenStruct.new(message: "#{error.class}: #{error.message}"),
+                     endpoint: @endpoint,
+                     data: nil,
+                     meta: nil).freeze
     end
 
     def build_endpoint(options)

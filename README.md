@@ -80,7 +80,7 @@ StrapiRuby.get(resource: :restaurants)
 
 You can use either `Symbol` or `String` when passing most of the arguments.
 API methods will return an OpenStruct which is a sort of Hash where you can access keys with dot notation.
-The answer has been made available through `data`, `meta` and `error`.
+The answer has been made available through `data`, `meta`.
 All subsequent hashes have been also converted to OpenStruct. It's really easy to navigate!
 
 ```ruby
@@ -140,6 +140,10 @@ StrapiRuby.put(resource: :articles,
 StrapiRuby.delete(resource: :articles, id: 12)
 
 ```
+
+#### .escape_empty_answer
+
+See [`.escape_empty_answer`](#gracefuly-degrade-errors-when-they-happen)
 
 ### Strapi Parameters
 
@@ -340,7 +344,7 @@ Only one pagination method is possible.
 
 ```ruby
 StrapiRuby.get(resource: :articles, start: 0, limit: 10)
-# => /articles?pagination[start]=0&pagination[limit]=12
+# => /articles?pagination[start]=0&pagination[limit]=10
 ```
 
 #### locale
@@ -459,6 +463,68 @@ Default headers cannot be overriden but will be merged with your added configura
 default_headers = { "Content-Type" => "application/json",
                     "Authorization" => "Bearer #{strapi_token}",
                     "User-Agent" => "StrapiRuby/#{StrapiRuby::VERSION}" }
+```
+
+### Handling Errors
+
+Depending on your utilisation, there are multiple ways to handle errors.
+
+#### Error Classes
+
+```ruby
+# Config Error
+class ConfigurationError < StandardError
+
+# Client Error
+class ClientError < StandardError
+
+# Client Error Specific Error
+class ConnectionError < ClientError
+class UnauthorizedError < ClientError
+class ForbiddenError < ClientError
+class NotFoundError < ClientError
+class UnprocessableEntityError < ClientError
+class ServerError < ClientError
+class BadRequestError < ClientError
+class JSONParsingError < ClientError
+```
+
+#### Gracefuly degrade errors when they happen
+
+One way to handle errors and gracefuly degrade is using `.escape_empty_answer`.
+
+##### Definition
+
+```ruby
+# Definition
+module StrapiRuby
+  def escape_empty_answer(answer)
+    return answer.error.message if answer.data.nil? || answer.data.empty?
+    yield
+  end
+end
+```
+
+##### Example : Usage in a Rails view
+
+```erb
+<% StrapiRuby.escape_empty_answer(answer) do %>
+  <%= answer.title %>
+  <%= answer.body %>
+<% end %>
+```
+
+Or you may want to handle specific errors like this also: 
+
+```ruby
+# some_controller.rb
+begin
+  answer = StrapiRuby.get(resource: "articles")
+rescue NotFoundError e =>
+  # Do something to avoid an embarassing situation
+rescue ClientError e =>
+  # Do something to avoid an embarassing situation
+end
 ```
 
 ## Contributing

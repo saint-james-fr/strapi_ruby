@@ -96,13 +96,11 @@ end
 
 # Test a 404 endpoint
 def test_404_endpoint
-  begin
-    test_get = StrapiRuby.get(resource: "thisDoesNotExist")
-    test_get.data.count
-  rescue StrapiRuby::NotFoundError => e
-    puts e.message
-    puts "404 endpoint test passed"
-  end
+  answer = StrapiRuby.get(resource: "thisDoesNotExist")
+  { error: answer.error,
+    data: answer.data,
+    meta: answer.meta }
+  # p test_get.data.count
 end
 
 # Test post article
@@ -126,17 +124,28 @@ def test_show_endpoint
   StrapiRuby.get(resource: "articles", show_endpoint: true).endpoint
 end
 
+def test_escape_empty_answer
+  answer = StrapiRuby.get(resource: "articles", id: 233)
+
+  StrapiRuby.escape_empty_answer(answer) do
+    puts "if you see this, it means the test is not passing"
+    return
+  end
+  puts "if you see this, it means the test is passing"
+  answer
+end
+
 # Main execution
 configure_strapi
 puts "\n\n"
 
 # Uncomment and run the desired test functions here
 tests = [
-  :test_get_all_articles,
-  :test_get_one_article,
-  :test_post_article,
-  :test_put_article,
-  :test_delete_article,
+  # :test_get_all_articles,
+  # :test_get_one_article,
+  # :test_post_article,
+  # :test_put_article,
+  # :test_delete_article,
   # :test_sorting,
   # :test_filtering,
   # :test_complex_filtering,
@@ -147,8 +156,8 @@ tests = [
   # :test_populate,
   # :test_raw_query,
   # :test_404_endpoint,
-  # :test_show_endpoint,raise_error(ArgumentError)
-
+  # :test_show_endpoint,
+  :test_escape_empty_answer,
 ]
 
 tests.each do |test|
