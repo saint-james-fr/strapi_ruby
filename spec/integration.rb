@@ -127,21 +127,21 @@ puts "\n\n"
 
 # Uncomment and run the desired test functions here
 tests = [
-  :test_get_all_articles,
-  :test_get_one_article,
-  :test_sorting,
-  :test_filtering,
-  :test_complex_filtering,
-  :test_pagination,
-  :test_offset_pagination,
-  :test_locale,
-  :test_selecting_fields,
-  :test_populate,
-  :test_raw_query,
-  :test_404_endpoint,
-  :test_post_article,
-  :test_put_article,
-  :test_delete_article,
+  # :test_get_all_articles,
+  # :test_get_one_article,
+  # :test_post_article,
+  # :test_put_article,
+  # :test_delete_article,
+  # :test_sorting,
+  # :test_filtering,
+  # :test_complex_filtering,
+  # :test_pagination,
+  # :test_offset_pagination,
+  # :test_locale,
+  # :test_selecting_fields,
+  # :test_populate,
+  # :test_raw_query,
+  # :test_404_endpoint,
 ]
 
 tests.each do |test|
