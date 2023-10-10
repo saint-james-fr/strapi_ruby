@@ -7,7 +7,7 @@ module StrapiRuby
       data = format_data(answer.data, options)
       meta = answer.meta
 
-      build_open_struct(data, meta)
+      build_open_struct(data, meta, options)
     end
 
     def post(options = {})
@@ -18,7 +18,7 @@ module StrapiRuby
       data = answer.data
       meta = answer.meta
 
-      build_open_struct(data, meta)
+      build_open_struct(data, meta, options)
     end
 
     def put(options = {})
@@ -29,7 +29,7 @@ module StrapiRuby
       data = answer.data
       meta = answer.meta
 
-      build_open_struct(data, meta)
+      build_open_struct(data, meta, options)
     end
 
     def delete(options = {})
@@ -39,16 +39,16 @@ module StrapiRuby
       data = answer.data
       meta = answer.meta
 
-      build_open_struct(data, meta)
+      build_open_struct(data, meta, options)
     end
 
     private
 
-    def build_open_struct(data, meta)
+    def build_open_struct(data, meta, options = {})
       # If user wants to see endpoint, we add it to the response
       if options[:show_endpoint] || StrapiRuby.config.show_endpoint
-        raise TypeError, "Invalid argument type. Expected Boolean" unless options[:show_endpoint].is_a?(Boolean) || StrapiRuby.config.show_endpoint.is_a?(Boolean)
-        Openstruct.new(data: data, meta: meta, endpoint: @endpoint)
+        raise TypeError, "Invalid argument type. Expected Boolean" unless [true, false].include?(options[:show_endpoint]) || [true, false].include?(StrapiRuby.config.show_endpoint)
+        OpenStruct.new(data: data, meta: meta, endpoint: @endpoint)
       else
         OpenStruct.new(data: data, meta: meta)
       end

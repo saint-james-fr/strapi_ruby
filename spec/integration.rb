@@ -147,7 +147,7 @@ tests = [
   # :test_populate,
   # :test_raw_query,
   # :test_404_endpoint,
-  :test_show_endpoint,
+  # :test_show_endpoint,
 ]
 
 tests.each do |test|
