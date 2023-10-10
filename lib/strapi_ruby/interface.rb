@@ -47,7 +47,6 @@ module StrapiRuby
     def build_open_struct(data, meta, options = {})
       # If user wants to see endpoint, we add it to the response
       if options[:show_endpoint] || StrapiRuby.config.show_endpoint
-        raise TypeError, "Invalid argument type. Expected Boolean" unless [true, false].include?(options[:show_endpoint]) || [true, false].include?(StrapiRuby.config.show_endpoint)
         OpenStruct.new(data: data, meta: meta, endpoint: @endpoint)
       else
         OpenStruct.new(data: data, meta: meta)
@@ -59,6 +58,7 @@ module StrapiRuby
       raise ArgumentError, ErrorMessage.missing_resource unless options.key?(:resource)
       raise TypeError, "Invalid argument type. Expected String or Symbol, got #{options[:resource].class.name}" unless options[:resource].is_a?(String) || options[:resource].is_a?(Symbol)
       raise TypeError, "Invalid argument type. Expected Integer, got #{options[:id].class.name}" if options.key?(:id) && !options[:id].is_a?(Integer)
+      raise TypeError, "Invalid argument type. Expected Boolean" if options[:show_endpoint] && ![true, false].include?(options[:show_endpoint])
       validate_body(options)
     end
 

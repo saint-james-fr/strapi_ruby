@@ -19,9 +19,9 @@ module StrapiRuby
     def validate!
       raise ConfigurationError, "strapi_server_uri is missing" if @strapi_server_uri.nil? || @strapi_server_uri.empty?
       raise ConfigurationError, "strapi_token is missing" if @strapi_token.nil? || @strapi_token.empty?
-      raise ArgumentError, "Expected Proc. Got #{@faraday.class.name}" if !@faraday.nil? && !@faraday.is_a?(Proc)
-
-      raise ArgumentError, "Invalid argument type. Expected Array. Got #{@convert_to_html.class.name}" unless @convert_to_html.is_a?(Array)
+      raise TypeError, "Expected Proc. Got #{@faraday.class.name}" if !@faraday.nil? && !@faraday.is_a?(Proc)
+      raise TypeError, "Invalid argument type. Expected Array. Got #{@convert_to_html.class.name}" unless @convert_to_html.is_a?(Array)
+      raise TypeError, "Invalid argument type. Expected Boolean" if ![true, false].include?(@show_endpoint)
 
       # We convert to symbols if user passed strings
       @convert_to_html.map!(&:to_sym)
