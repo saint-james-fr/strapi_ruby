@@ -130,7 +130,7 @@ StrapiRuby.post(resource: :articles,
 # Updates a specific item, returns item updated
 StrapiRuby.put(resource: :articles,
                id: 23,
-               data: {content: "I've changed my mind about this one"})
+               data: {content: "'I've edited this article via a PUT request'"})
 ```
 
 #### .delete
@@ -147,7 +147,7 @@ StrapiRuby.delete(resource: :articles, id: 12)
 
 The query is built using a transverse hash function similar to Javascript `qs` library used by Strapi.
 
-Instead parameters are passed as a hash and you can use symbols instead of strings - except for the operators of the filters.
+Instead parameters should be passed as a hash and you can use symbols instead of strings - except for the operators of the filters used as keys. Integers, eg. for ID, must be passed as strings.
 
 Full parameters documentation from Strapi is available [here](https://docs.strapi.io/dev-docs/api/rest/parameters).
 
@@ -185,7 +185,7 @@ StrapiRuby.get(resource: :articles, populate: [
 # Deeply populate a dynamic zone with 2 components
 StrapiRuby.get(resource: :articles, populate: {
                  testDZ: {
-                   populate: "*",
+                   populate: :*,
                  },
                })
 # => /articles?populate[testDZ][populate]=*
@@ -196,10 +196,10 @@ StrapiRuby.get(resource: :articles, populate: {
                    on: {
                      "test.test-compo" => {
                        fields: [:testString],
-                       populate: "*",
+                       populate: :*,
                      },
                      "test.test-compo2" => {
-                       fields: ["testInt"],
+                       fields: [:testInt],
                      },
                    },
                  },
@@ -363,7 +363,8 @@ StrapiRuby.get(resource: :articles, publication_state: :preview)
 
 ### Use raw query
 
-If you wanna pass a raw query you're building yourself, just use raw as an option.
+If you wanna pass a raw query you decide to build, just use raw as an option.
+It cannot be combined with any other Strapi parameters.
 
 ```ruby
 StrapiRuby.get(resource: articles:, raw: "?fields=title&sort=createdAt:desc")
@@ -372,11 +373,11 @@ StrapiRuby.get(resource: articles:, raw: "?fields=title&sort=createdAt:desc")
 
 ## Configuration
 
-You can pass more options in the config file
+You can pass more options via the config block.
 
 ### Show Endpoint
 
-This option is for accessing the resulting endpoint and with its query, this is useful for debugging. It defaults to `false`
+This option is for accessing the resulting endpoint, ie. `strapi_server_uri` and its query, it is useful for debugging. It defaults to `false`.
 
 ```ruby
 # Pass this as a parameter to the config block
@@ -400,9 +401,9 @@ Or directly in the options parameters
 
 ### DateTime Conversion
 
-By default, any `createdAt`, `publishedAt` and `updatedAt` fields in the answer will be recursively converted to `DateTime` instances, making it easy to use `#strftime` methods. See method documentation [here](https://ruby-doc.org/stdlib-2.6.1/libdoc/date/rdoc/DateTime.html#method-i-strftime).
+By default, any `createdAt`, `publishedAt` and `updatedAt` fields in the answer will be recursively converted to `DateTime` instances, making it easy to use `#strftime` method, you can consult its documentation [here](https://ruby-doc.org/stdlib-2.6.1/libdoc/date/rdoc/DateTime.html#method-i-strftime).
 
-If you don't want this conversion:
+But if you don't want this conversion, pass it to the configure block.
 
 ```ruby
 StrapiRuby.configure do |config|
@@ -414,7 +415,7 @@ StrapiRuby.configure do |config|
 
 ### Markdown Conversion
 
-Using this configuration, selected fields will automatically be converted to HTML using `redcarpet` gem. This is very useful to get data ready for the views.
+Selected fields will automatically be converted to HTML using `redcarpet` gem. This is very useful to get data ready for the views.
 
 ```ruby
 # You can pass this in your config file:
@@ -446,7 +447,7 @@ StrapiRuby.configure do |config|
   end
 ```
 
-#### Default Faraday::Connection options
+#### Default Faraday::Connection used by the gem
 
 Default options used by this gem are `url_encode` and `Faraday.default_adapter`, but you can override them.
 
