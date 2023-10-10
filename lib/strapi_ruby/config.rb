@@ -1,5 +1,7 @@
 module StrapiRuby
   class Config
+    include StrapiRuby::Validations
+    
     attr_accessor :strapi_server_uri,
                   :strapi_token,
                   :faraday,
@@ -17,9 +19,10 @@ module StrapiRuby
     end
 
     def validate!
-      raise ConfigurationError, "strapi_server_uri is missing" if @strapi_server_uri.nil? || @strapi_server_uri.empty?
-      raise ConfigurationError, "strapi_token is missing" if @strapi_token.nil? || @strapi_token.empty?
-      raise TypeError, "Expected Proc. Got #{@faraday.class.name}" if !@faraday.nil? && !@faraday.is_a?(Proc)
+      validate_config(self)
+
+
+      
       raise TypeError, "Invalid argument type. Expected Array. Got #{@convert_to_html.class.name}" unless @convert_to_html.is_a?(Array)
       raise TypeError, "Invalid argument type. Expected Boolean" unless [true, false].include?(@show_endpoint)
 
