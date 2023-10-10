@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "strapi_ruby/version"
+require_relative "strapi_ruby/validations"
 require_relative "strapi_ruby/endpoint/builder"
 require_relative "strapi_ruby/endpoint/strapi_parameters"
 require_relative "strapi_ruby/endpoint/query"

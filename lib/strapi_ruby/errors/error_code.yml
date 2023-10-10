@@ -4,4 +4,6 @@ missing_configuration: >
     config.strapi_token = '123'
   end
 missing_ressource: >
-  StrapiRuby.get(resource: "posts")
+  StrapiRuby.get(resource: :restaurants)
+missing_data: >
+  StrapiRuby.post(resource: :restaurants, data: { name: 'My restaurant' })

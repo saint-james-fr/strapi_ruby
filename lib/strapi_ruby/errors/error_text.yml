@@ -1,2 +1,3 @@
 missing_configuration: Config block missing. Configure plugin in /config/strapi_ruby.rb.
 missing_ressource: Ressource is missing.
+missing_data: Data key is missing from parameters. You need to pass a body to perform this HTTP request (POST, PUT).
