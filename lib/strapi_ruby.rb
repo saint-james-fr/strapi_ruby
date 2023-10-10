@@ -24,3 +24,4 @@ end
 
 # Load Rake tasks if Rake is defined
 load "tasks/generate_config.rake" if defined?(Rake)
+

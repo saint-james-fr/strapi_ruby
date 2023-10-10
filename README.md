@@ -8,14 +8,13 @@
 
 **Strapi** is an open-source, Node.js based, Headless CMS to easily build customizable APIs.
 
-I  think it's one of the actual coolest solution for integrating a CMS into Rails for example, so let's dive in!
-
+I think it's one of the actual coolest solution for integrating a CMS into Rails for example, so let's dive in!
 
 ## Table of contents
 
 - [Installation](#installation)
 - Usage:
-  - [API](#api): 
+  - [API](#api):
     - [get](#get)
     - [post](#post)
     - [put](#put)
@@ -56,6 +55,7 @@ rake strapi_ruby:install
 This will generate a config file for you. If you're not using Rails, copy paste the config code below before using the gem.
 
 ##### IMPORTANT
+
 Don't forget the trailing `/api` in your uri and don't finish it with a trailing slash.
 
 ```ruby
@@ -167,45 +167,44 @@ StrapiRuby.get(resource: :articles, populate: [:categories])
 # --------------------------------
 
 # Populate two level deep
-StrapiRuby.get(resource: :articles, populate: {author: {populate: [:company]}})
+StrapiRuby.get(resource: :articles, populate: { author: { populate: [:company] } })
 # => /articles??populate[author][populate][0]=company
 
 # --------------------------------
 
 # Populate a 2-level component and its media
 StrapiRuby.get(resource: :articles, populate: [
-      'seoData',
-      'seoData.sharedImage',
-      'seoData.sharedImage.media',
-    ])
+                 "seoData",
+                 "seoData.sharedImage",
+                 "seoData.sharedImage.media",
+               ])
 # => articles?populate[0]=seoData&populate[1]=seoData.sharedImage&populate[2]=seoData.sharedImage.media
 
 # --------------------------------
 
 # Deeply populate a dynamic zone with 2 components
 StrapiRuby.get(resource: :articles, populate: {
-      testDZ: {
-        populate: '*',
-      }})
+                 testDZ: {
+                   populate: "*",
+                 },
+               })
 # => /articles?populate[testDZ][populate]=*
-
 
 # Using detailed population strategy
 StrapiRuby.get(resource: :articles, populate: {
-      testDz: {
-        on: {
-          'test.test-compo': {
-            fields: ['testString'],
-            populate: '*',
-          },
-          'test.test-compo2': {
-            fields: ['testInt'],
-          },
-        },
-      },
-    })
+                 testDz: {
+                   on: {
+                     "test.test-compo" => {
+                       fields: [:testString],
+                       populate: "*",
+                     },
+                     "test.test-compo2" => {
+                       fields: ["testInt"],
+                     },
+                   },
+                 },
+               })
 # => /articles?populate[testDz][on][test.test-compo][fields][0]=testString&populate[testDz][on][test.test-compo][populate]=*&populate[testDz][on][test.test-compo2][fields][0]=testInt
-
 ```
 
 #### fields
@@ -271,57 +270,59 @@ StrapiRuby.get(resource: :articles, sort: ["createdAt:desc", "title:asc"])
 
 ```ruby
 # Simple usage
-StrapiRuby.get(resource: :users, filters: {username: {"$eq" => "John"}})
+StrapiRuby.get(resource: :users, filters: { username: { "$eq" => "John" } })
 # => /users?filters[username][$eq]=John
 
 # --------------------------------
 
 # Using $in operator to match multiples values
-StrapiRuby.get(resource: :restaurants, filters: {
-    id: {
-      "$in" => [3, 6, 8]
-    }
-  })
+StrapiRuby.get(resource: :restaurants,
+               filters: {
+                 id: {
+                   "$in" => ["3", "6", "8"],
+                 },
+               })
 # => /restaurants?filters[id][$in][0]=3&filters[id][$in][1]=6&filters[id][$in][2]=8
 
 # --------------------------------
 
 # Complex filtering with $and and $or
-RubyStrapi.get(resource: :books, filters: {
-    $or: [
-      {
-        date: {
-          "$eq" => '2020-01-01',
-        }
-      },
-      {
-        date: {
-          "$eq" => '2020-01-02',
-        }
-      }
-    ],
-    author: {
-      name: {
-        "$eq"=> 'Kai doe',
-      }
-    }
-  })
+RubyStrapi.get(resource: :books,
+               filters: {
+                 "$or" => [
+                   {
+                     date: {
+                       "$eq" => "2020-01-01",
+                     },
+                   },
+                   {
+                     date: {
+                       "$eq" => "2020-01-02",
+                     },
+                   },
+                 ],
+                 author: {
+                   name: {
+                     "$eq" => "Kai doe",
+                   },
+                 },
+               })
 # => /books?filters[$or][0][date][$eq]=2020-01-01&filters[$or][1][date][$eq]=2020-01-02&filters[author][name][$eq]=Kai%20doe
 
 # --------------------------------
 
 # Deep filtering on relation's fields
-StrapiRuby.get(resource: :restaurants, filters: {
-    chef: {
-      restaurants: {
-        stars: {
-          "$eq" => 5,
-        }
-      }
-    }
-  })
+StrapiRuby.get(resource: :restaurants,
+               filters: {
+                 chef: {
+                   restaurants: {
+                     stars: {
+                       "$eq" => 5,
+                     },
+                   },
+                 },
+               })
 # => /restaurants?filters[chef][restaurants][stars][$eq]=5
-
 ```
 
 #### Pagination by page: page & page_size
@@ -368,7 +369,6 @@ If you wanna pass a raw query you're building yourself, just use raw as an optio
 StrapiRuby.get(resource: articles:, raw: "?fields=title&sort=createdAt:desc")
 # => /articles?fields=title&sort=createdAt:desc"
 ```
-
 
 ## Configuration
 
@@ -456,8 +456,8 @@ Default headers cannot be overriden but will be merged with your added configura
 
 ```ruby
 default_headers = { "Content-Type" => "application/json",
-                          "Authorization" => "Bearer #{strapi_token}",
-                          "User-Agent" => "StrapiRuby/#{StrapiRuby::VERSION}" }
+                    "Authorization" => "Bearer #{strapi_token}",
+                    "User-Agent" => "StrapiRuby/#{StrapiRuby::VERSION}" }
 ```
 
 ## Contributing
