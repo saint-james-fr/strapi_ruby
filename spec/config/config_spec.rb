@@ -1,6 +1,6 @@
 RSpec.describe StrapiRuby::Config do
   let(:config) { described_class.new }
-  describe "#initialize" do
+  describe "#call" do
     context "when @faraday is a Proc" do
       it "does not raise an TypeError" do
         faraday_proc = Proc.new { puts "I'm a Proc" }
