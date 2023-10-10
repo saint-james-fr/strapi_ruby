@@ -1,8 +1,17 @@
 # StrapiRuby
 
+<div align="center">
+<img src="assets/strapi_ruby_logo.png" width="150px">
+</div>
+
 **StrapiRuby** is a Ruby wrapper around Strapi REST API, version 4. It has not been tested with previous versions.
+
 **Strapi** is an open-source, Node.js based, Headless CMS to easily build customizable APIs.
-I personaly think it's one of the coolest solution for integrating a CMS into Rails for example, so let's dive in!
+
+I  think it's one of the actual coolest solution for integrating a CMS into Rails for example, so let's dive in!
+
+
+## Table of contents
 
 - [Installation](#installation)
 - Usage:
@@ -44,10 +53,10 @@ Then if you use Rails, run in your terminal:
 rake strapi_ruby:install
 ```
 
-This will generate a config file for you. If you're not using Rails, copy paste this code before using the gem.
+This will generate a config file for you. If you're not using Rails, copy paste the config code below before using the gem.
 
-Don't forget the trailing `/api` in your uri.
-Don't finish with a trailing slash.
+##### IMPORTANT
+Don't forget the trailing `/api` in your uri and don't finish it with a trailing slash.
 
 ```ruby
 # config/strapi_ruby.rb
@@ -75,18 +84,18 @@ The answer has been made available through `data`, `meta` and `error`.
 All subsequent hashes have been also converted to OpenStruct. It's really easy to navigate!
 
 ```ruby
-# 
+# Structure of the answers
 
 # You can access your data like this
 answer = StrapiRuby.get(resource: :articles)
 
-# This is your data, here your collection
+# Grab data
 data = answer.data
 
-# These are your metadata for pagination for example.
+# Metadata for pagination for example
 meta = answer.meta
 
-# If there is an error, it will be indicated within this field
+# Error informations
 error = answer.error
 
 # You access a specific attribute like this
@@ -109,7 +118,7 @@ StrapiRuby.get(resource: :restaurants, id: 1)
 #### .post
 
 ```ruby
-# Create an item of a collection, returns item created
+# Creates an item of a collection, returns item created
 StrapiRuby.post(resource: :articles,
                 data: {title: "This is a brand article",
                        content: "created by a POST request"})
@@ -119,7 +128,7 @@ StrapiRuby.post(resource: :articles,
 #### .put
 
 ```ruby
-# Update a specific item, returns item updated
+# Updates a specific item, returns item updated
 StrapiRuby.put(resource: :articles,
                id: 23,
                data: {content: "I've changed my mind about this one"})
@@ -364,7 +373,7 @@ StrapiRuby.get(resource: articles:, raw: "?fields=title&sort=createdAt:desc")
 
 ## Configuration
 
-You can pass some options in the config file, by uncommenting them.
+You can pass more options in the config file
 
 ### DateTime Conversion
 
@@ -443,7 +452,3 @@ See Strapi documentation for more details about installing a Strapi Server [here
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
-
-```
-
-```
