@@ -1,15 +1,5 @@
 module StrapiRuby
   module Interface
-    # options could be strapi rest api parameter combined with :resource or just use :raw
-    # :raw
-    # :resource
-    # :sort
-    # :filters
-    # :fields
-    # :populate
-    # :page
-    # :page_size
-    #
     def get(options = {})
       validate_options(options)
       @endpoint = build_endpoint(options)
@@ -52,6 +42,12 @@ module StrapiRuby
       raise ArgumentError, ErrorMessage.missing_resource unless options.key?(:resource)
       raise TypeError, "Invalid argument type. Expected String or Symbol, got #{options[:resource].class.name}" unless options[:resource].is_a?(String) || options[:resource].is_a?(Symbol)
       raise TypeError, "Invalid argument type. Expected Integer, got #{options[:id].class.name}" if options.key?(:id) && !options[:id].is_a?(Integer)
+      validate_body(options)
+    end
+
+    def validate_body(options)
+      return unless options.key?(:data)
+      raise TypeError, "Invalid argument type. Expected Hash, got #{options[:data].class.name}" unless options[:data].is_a?(Hash)
     end
 
     def build_endpoint(options)
