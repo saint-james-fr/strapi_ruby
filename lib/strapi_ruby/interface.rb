@@ -6,7 +6,7 @@ module StrapiRuby
       answer = @client.get(@endpoint)
       formatted_data = format_data(answer.data, options)
 
-      OpenStruct.new(data: formatted_data, meta: answer.meta, error: answer.error)
+      OpenStruct.new(data: formatted_data, meta: answer.meta)
     end
 
     def post(options = {})
@@ -15,7 +15,7 @@ module StrapiRuby
       body = options[:data]
       answer = @client.post(@endpoint, body)
 
-      OpenStruct.new(data: answer.data, meta: answer.meta, error: answer.error)
+      OpenStruct.new(data: answer.data, meta: answer.meta)
     end
 
     def put(options = {})
@@ -24,7 +24,7 @@ module StrapiRuby
       body = options[:data]
       answer = @client.put(@endpoint, body)
 
-      OpenStruct.new(data: answer.data, meta: answer.meta, error: answer.error)
+      OpenStruct.new(data: answer.data, meta: answer.meta)
     end
 
     def delete(options = {})
@@ -32,7 +32,7 @@ module StrapiRuby
       @endpoint = build_endpoint(options)
       answer = @client.delete(@endpoint)
 
-      OpenStruct.new(data: answer.data, meta: answer.meta, error: answer.error)
+      OpenStruct.new(data: answer.data, meta: answer.meta)
     end
 
     private

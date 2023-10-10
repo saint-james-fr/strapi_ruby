@@ -95,13 +95,12 @@ data = answer.data
 # Metadata for pagination for example
 meta = answer.meta
 
-# Error informations
-error = answer.error
-
 # You access a specific attribute like this
 answer = StrapiRuby.get(resource: :articles, id: 2)
 article = answer.data
 title = article.attributes.title
+
+# If an error occur (400, 401, 403, 404, 422, 500..599), it will be raised and stop execution.
 ```
 
 #### .get
