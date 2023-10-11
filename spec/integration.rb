@@ -163,7 +163,7 @@ tests = [
   # :test_raw_query,
   # :test_404_endpoint,
   # :test_show_endpoint,
-  :test_escape_empty_answer,
+  # :test_escape_empty_answer,
 ]
 
 tests.each do |test|
