@@ -34,6 +34,9 @@ I think it's one of the actual coolest solution for integrating a CMS into Rails
   - [DateTime conversion](#datetime-conversion)
   - [Markdown conversion](#markdown-conversion)
   - [Faraday block](#faraday-block)
+- [Handling Errors](#handling-errors)
+  - [Errors Classes](#errors-classes)
+  - [Graceful degradation](#graceful-degradation)
 - [Contributing](#contributing)
 - [Tests](#tests)
 
@@ -151,7 +154,7 @@ StrapiRuby.delete(resource: :articles, id: 12)
 
 #### .escape_empty_answer
 
-See [`.escape_empty_answer`](#gracefuly-degrade-errors-when-they-happen)
+See [`.escape_empty_answer`](#graceful-degradation)
 
 ### Basic Example: Rails
 
@@ -507,7 +510,7 @@ default_headers = { "Content-Type" => "application/json",
 
 Depending on your utilisation, there are multiple ways to handle errors.
 
-#### Error Classes
+#### Errors Classes
 
 ```ruby
 # Config Error
@@ -527,7 +530,7 @@ class BadRequestError < ClientError
 class JSONParsingError < ClientError
 ```
 
-#### Gracefuly degrade errors when they happen
+#### Graceful degradation
 
 One way to handle errors and gracefuly degrade is using `.escape_empty_answer` and use a block to nest your data accessing code.
 
