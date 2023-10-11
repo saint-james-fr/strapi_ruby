@@ -20,7 +20,7 @@ namespace :strapi_ruby do
     config.strapi_server_uri = "YOUR_SERVER_URI"
     config.strapi_token = "YOUR_TOKEN"
   end
-  CONFIG
+      CONFIG
       File.write(config_file, config)
       puts "StrapiRuby configuration file created at config/initializers/strapi_ruby.rb."
     end

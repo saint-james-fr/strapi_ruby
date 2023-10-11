@@ -26,7 +26,7 @@ module StrapiRuby
     end
 
     def validate_show_endpoint_config(show_endpoint)
-      raise TypeError, "#{ErrorMessage.expected_boolean}" unless [true, false].include?(show_endpoint)
+      raise TypeError, ErrorMessage.expected_boolean unless [true, false].include?(show_endpoint)
     end
 
     def validate_faraday_block(faraday)
@@ -52,7 +52,7 @@ module StrapiRuby
     end
 
     def validate_show_endpoint_params(options)
-      raise TypeError, "#{ErrorMessage.expected_boolean}" if options[:show_endpoint] && ![true, false].include?(options[:show_endpoint])
+      raise TypeError, ErrorMessage.expected_boolean if options[:show_endpoint] && ![true, false].include?(options[:show_endpoint])
     end
 
     def validate_body(options)

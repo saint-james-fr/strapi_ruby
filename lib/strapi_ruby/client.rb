@@ -48,15 +48,13 @@ module StrapiRuby
     end
 
     def performs_request
-      begin
-        yield
-      rescue Faraday::ConnectionFailed => e
-        raise ConnectionError, "#{ErrorMessage.connection_failed} #{e.message}"
-      rescue Faraday::TimeoutError => e
-        raise ConnectionError, "#{ErrorMessage.timeout} #{e.message}"
-      rescue StandardError => e
-        raise ConnectionError, "#{ErrorMessage.unexpected} #{e.message}"
-      end
+      yield
+    rescue Faraday::ConnectionFailed => e
+      raise ConnectionError, "#{ErrorMessage.connection_failed} #{e.message}"
+    rescue Faraday::TimeoutError => e
+      raise ConnectionError, "#{ErrorMessage.timeout} #{e.message}"
+    rescue StandardError => e
+      raise ConnectionError, "#{ErrorMessage.unexpected} #{e.message}"
     end
 
     def convert_json_to_open_struct(json)

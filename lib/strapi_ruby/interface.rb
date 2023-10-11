@@ -20,23 +20,22 @@ module StrapiRuby
 
     def escape_empty_answer(answer)
       return answer.error.message if answer.data.nil? && answer.error
+
       yield
     end
 
     private
 
     def request(http_verb, options = {})
-      begin
-        validate_options(options)
-        @endpoint = build_endpoint(options)
-        answer = build_answer(http_verb, @endpoint, options)
-        data = format_data(answer.data, options)
-        meta = answer.meta
+      validate_options(options)
+      @endpoint = build_endpoint(options)
+      answer = build_answer(http_verb, @endpoint, options)
+      data = format_data(answer.data, options)
+      meta = answer.meta
 
-        return_success_open_struct(data, meta, options)
-      rescue StrapiRuby::ClientError, StrapiRuby::ConfigError => e
-        return_error_open_struct(e, options)
-      end
+      return_success_open_struct(data, meta, options)
+    rescue StrapiRuby::ClientError, StrapiRuby::ConfigError => e
+      return_error_open_struct(e, options)
     end
 
     def build_answer(http_verb, endpoint, options)
@@ -53,7 +52,7 @@ module StrapiRuby
       options[:show_endpoint] || StrapiRuby.config.show_endpoint
     end
 
-    def return_success_open_struct(data, meta, error = nil, options = {})
+    def return_success_open_struct(data, meta, _error = nil, options = {})
       if show_endpoint?(options)
         OpenStruct.new(data: data,
                        meta: meta,
@@ -63,7 +62,7 @@ module StrapiRuby
       end
     end
 
-    def return_error_open_struct(error, options = {})
+    def return_error_open_struct(error, _options = {})
       OpenStruct.new(error: OpenStruct.new(message: "#{error.class}: #{error.message}"),
                      endpoint: @endpoint,
                      data: nil,
