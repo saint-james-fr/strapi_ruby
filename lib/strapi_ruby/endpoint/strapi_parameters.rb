@@ -22,7 +22,7 @@ module StrapiRuby
       end
 
       def page_size(number)
-        raise TypeError, "Invalid argument type. Expected Integer got #{number.class.name}" unless number.is_a?(Integer)
+        raise TypeError, "#{ErrorMessage.expected_integer} Got #{number.class.name}" unless number.is_a?(Integer)
 
         check_single_pagination
         @result += "#{prefix}pagination[pageSize]=#{number}"
@@ -34,7 +34,7 @@ module StrapiRuby
       #
       # @return [String] The updated query string with the page number option added.
       def page(number)
-        raise TypeError, "Invalid argument type. Expected Integer got #{number.class.name}" unless number.is_a?(Integer)
+        raise TypeError, "#{ErrorMessage.expected_integer} Got #{number.class.name}" unless number.is_a?(Integer)
 
         check_single_pagination
         @result += "#{prefix}pagination[page]=#{number}"
@@ -46,7 +46,7 @@ module StrapiRuby
       #
       # @return [String] The updated query string with the offset option added.
       def start(number)
-        raise TypeError, "Invalid argument type. Expected Integer got #{number.class.name}" unless number.is_a?(Integer)
+        raise TypeError, "#{ErrorMessage.expected_integer} Got #{number.class.name}" unless number.is_a?(Integer)
 
         check_single_pagination
         @result += "#{prefix}pagination[start]=#{number}"
@@ -71,14 +71,14 @@ module StrapiRuby
       #
       # @return [String] The updated query string with the locale option added.
       def locale(arg)
-        raise TypeError, "Invalid argument type. Expect String or Symbol, got #{arg.class.name}" unless arg.is_a?(String) || arg.is_a?(Symbol)
+        raise TypeError, "#{ErrorMessage.expected_string_symbol} Got #{arg.class.name}" unless arg.is_a?(String) || arg.is_a?(Symbol)
 
         @result += "#{prefix}locale=#{arg}"
       end
 
       def publication_state(arg)
-        raise TypeError, "Invalid argument type. Expect String or Symbol, got #{arg.class.name}" unless arg.is_a?(String) || arg.is_a?(Symbol)
-        raise ArgumentError, "Possible values are only :live or :preview, got #{arg.class.name}" unless arg.to_sym == :live || arg.to_sym == :preview
+        raise TypeError, "#{ErrorMessage.expected_string_symbol} Got #{arg.class.name}" unless arg.is_a?(String) || arg.is_a?(Symbol)
+        raise ArgumentError, "#{ErrorMessage.publication_state} Got #{arg}" unless arg.to_sym == :live || arg.to_sym == :preview
 
         @result += "#{prefix}publicationState=#{arg}"
       end
@@ -91,7 +91,7 @@ module StrapiRuby
                       (@options.key(:pagination) && options.key?(:start)) ||
                       (@options.key(:pagination) && options.key?(:limit))
 
-        raise ArgumentError, "Use a single pagination method, either by page or by offset"
+        raise ArgumentError, ErrorMessage.pagination
       end
 
       # builds the prefix for the query string (either "?" or "&" depending on whether the query string is empty or not).

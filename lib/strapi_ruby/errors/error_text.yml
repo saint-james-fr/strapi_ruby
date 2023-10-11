@@ -1,3 +1,13 @@
 missing_configuration: Config block missing. Configure plugin in /config/strapi_ruby.rb.
 missing_ressource: Ressource is missing.
 missing_data: Data key is missing from parameters. You need to pass a body to perform this HTTP request (POST, PUT).
+connection_failed: Connection failed!
+timeout: Timeout reached!
+unexpected: An unexpected error occured.
+expected_array: Invalid argument type. Expected Array.
+expected_hash: Invalid argument type. Expected Hash.
+expected_string_symbol: Invalid argument type. Expected String or Symbol.
+expected_integer: Invalid argument type. Expected Integer.
+expected_proc: Invalid argument type. Expected Proc.
+publication_state: Invalid argument. Expected :live or :preview.
+pagination: Use a single pagination method, either by page or by offset

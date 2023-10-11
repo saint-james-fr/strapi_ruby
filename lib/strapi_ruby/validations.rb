@@ -22,15 +22,15 @@ module StrapiRuby
     private
 
     def validate_convert_to_html(convert_to_html)
-      raise TypeError, "Invalid argument type. Expected Array. Got #{convert_to_html.class.name}" unless convert_to_html.is_a?(Array)
+      raise TypeError, "#{ErrorMessage.expected_array}. Got #{convert_to_html.class.name}" unless convert_to_html.is_a?(Array)
     end
 
     def validate_show_endpoint_config(show_endpoint)
-      raise TypeError, "Invalid argument type. Expected Boolean" unless [true, false].include?(show_endpoint)
+      raise TypeError, "#{ErrorMessage.expected_boolean}" unless [true, false].include?(show_endpoint)
     end
 
     def validate_faraday_block(faraday)
-      raise TypeError, "Expected Proc. Got #{faraday.class.name}" if !faraday.nil? && !faraday.is_a?(Proc)
+      raise TypeError, "#{ErrorMessage.expected_proc} Got #{faraday.class.name}" if !faraday.nil? && !faraday.is_a?(Proc)
     end
 
     def validate_mandatory_config_params(strapi_server_uri, strapi_token)
@@ -44,20 +44,20 @@ module StrapiRuby
 
     def validate_resource(options)
       raise ArgumentError, ErrorMessage.missing_resource unless options.key?(:resource)
-      raise TypeError, "Invalid argument type. Expected String or Symbol, got #{options[:resource].class.name}" unless options[:resource].is_a?(String) || options[:resource].is_a?(Symbol)
+      raise TypeError, "#{ErrorMessage.expected_string_symbol} Got #{options[:resource].class.name}" unless options[:resource].is_a?(String) || options[:resource].is_a?(Symbol)
     end
 
     def validate_id(options)
-      raise TypeError, "Invalid argument type. Expected Integer, got #{options[:id].class.name}" if options.key?(:id) && !options[:id].is_a?(Integer)
+      raise TypeError, "#{ErrorMessage.expected_integer} Got #{options[:id].class.name}" if options.key?(:id) && !options[:id].is_a?(Integer)
     end
 
     def validate_show_endpoint_params(options)
-      raise TypeError, "Invalid argument type. Expected Boolean" if options[:show_endpoint] && ![true, false].include?(options[:show_endpoint])
+      raise TypeError, "#{ErrorMessage.expected_boolean}" if options[:show_endpoint] && ![true, false].include?(options[:show_endpoint])
     end
 
     def validate_body(options)
       return unless options.key?(:data)
-      raise TypeError, "Invalid argument type. Expected Hash, got #{options[:data].class.name}" unless options[:data].is_a?(Hash)
+      raise TypeError, "#{ErrorMessage.expected_hash} Got #{options[:data].class.name}" unless options[:data].is_a?(Hash)
     end
   end
 end

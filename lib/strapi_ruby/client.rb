@@ -10,54 +10,22 @@ module StrapiRuby
     end
 
     def get(endpoint)
-      begin
-        response = @connection.get(endpoint)
-      rescue Faraday::ConnectionFailed => e
-        raise ConnectionError, "Connection failed! #{e.message}"
-      rescue Faraday::TimeoutError => e
-        raise ConnectionError, "Timeout error! #{e.message}"
-      rescue StandardError => e
-        raise ConnectionError, "An unexpected error occurred... #{e.message}"
-      end
+      response = perform_request { @connection.get(endpoint) }
       handle_response(response)
     end
 
     def post(endpoint, body)
-      begin
-        response = @connection.post(endpoint, build_data_payload(body))
-      rescue Faraday::ConnectionFailed => e
-        raise ConnectionError, "Connection failed! #{e.message}"
-      rescue Faraday::TimeoutError => e
-        raise ConnectionError, "Timeout error! #{e.message}"
-      rescue StandardError => e
-        raise ConnectionError, "An unexpected error occurred... #{e.message}"
-      end
+      response = perform_request { @connection.post(endpoint, build_data_payload(body)) }
       handle_response(response)
     end
 
     def put(endpoint, body)
-      begin
-        response = @connection.put(endpoint, build_data_payload(body))
-      rescue Faraday::ConnectionFailed => e
-        raise ConnectionError, "Connection failed! #{e.message}"
-      rescue Faraday::TimeoutError => e
-        raise ConnectionError, "Timeout error! #{e.message}"
-      rescue StandardError => e
-        raise ConnectionError, "An unexpected error occurred... #{e.message}"
-      end
+      response = perform_request { @connection.put(endpoint, build_data_payload(body)) }
       handle_response(response)
     end
 
     def delete(endpoint)
-      begin
-        response = @connection.delete(endpoint)
-      rescue Faraday::ConnectionFailed => e
-        raise ConnectionError, "Connection failed! #{e.message}"
-      rescue Faraday::TimeoutError => e
-        raise ConnectionError, "Timeout error! #{e.message}"
-      rescue StandardError => e
-        raise ConnectionError, "An unexpected error occurred... #{e.message}"
-      end
+      response = performs_request { @connection.delete(endpoint) }
       handle_response(response)
     end
 
@@ -76,6 +44,18 @@ module StrapiRuby
         faraday.adapter Faraday.default_adapter
         block&.call(faraday)
         faraday.headers = default_headers.merge(faraday.headers)
+      end
+    end
+
+    def performs_request
+      begin
+        yield
+      rescue Faraday::ConnectionFailed => e
+        raise ConnectionError, "#{ErrorMessage.connection_failed} #{e.message}"
+      rescue Faraday::TimeoutError => e
+        raise ConnectionError, "#{ErrorMessage.timeout} #{e.message}"
+      rescue StandardError => e
+        raise ConnectionError, "#{ErrorMessage.unexpected} #{e.message}"
       end
     end
 

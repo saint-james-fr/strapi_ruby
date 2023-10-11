@@ -19,7 +19,7 @@ module StrapiRuby
     end
 
     def escape_empty_answer(answer)
-      return answer.error.message if answer.data.nil? || answer.data.empty?
+      return answer.error.message if answer.data.nil? && answer.error
       yield
     end
 
