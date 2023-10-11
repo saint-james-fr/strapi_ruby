@@ -78,21 +78,17 @@ StrapiRuby.get(resource: :restaurants)
 
 ### API
 
-You can use either `Symbol` or `String` when passing most of the arguments.
-API methods will return an OpenStruct which is a sort of Hash where you can access keys with dot notation.
-The answer has been made available through `data`, `meta`.
-All subsequent hashes have been also converted to OpenStruct. It's really easy to navigate!
+When passing most of the arguments and options, you can use either `Symbol` or `String` for single fields/items, and an `Array` of `Symbol` or `String`.
+
+API methods will return an [OpenStruct](https://ruby-doc.org/stdlib-2.5.1/libdoc/ostruct/rdoc/OpenStruct.html) which is similar to a Hash but you can access keys with dot notation. All fields of the OpenStruct have been recursively converted to OpenStruct as well so it's easy to navigate, as seen below
 
 ```ruby
-# Structure of the answers
-
-# You can access your data like this
+# These are similar
 answer = StrapiRuby.get(resource: :articles)
+answer = StrapiRuby.get(resource: "articles")
 
-# Grab data
+# Grab data or meta
 data = answer.data
-
-# Metadata for pagination for example
 meta = answer.meta
 
 # You access a specific attribute like this
@@ -100,13 +96,16 @@ answer = StrapiRuby.get(resource: :articles, id: 2)
 article = answer.data
 title = article.attributes.title
 
-# If an error occur (400, 401, 403, 404, 422, 500..599), it will be raised and stop execution.
+# If an error occur, it will be raised to be rescued and displayed in the answer.
+data = answer.data # => nil
+meta = answer.meta # => nil
+error = answer.error.message # => ErrorType:ErrorMessage
 ```
 
 #### .get
 
 ```ruby
-# Display all items of a collection, returns an array
+# Display all items of a collection as an array
 answer = StrapiRuby.get(resource: :restaurants)
 
 
@@ -117,7 +116,7 @@ StrapiRuby.get(resource: :restaurants, id: 1)
 #### .post
 
 ```ruby
-# Creates an item of a collection, returns item created
+# Create an item of a collection, return item created
 StrapiRuby.post(resource: :articles,
                 data: {title: "This is a brand article",
                        content: "created by a POST request"})
@@ -127,7 +126,7 @@ StrapiRuby.post(resource: :articles,
 #### .put
 
 ```ruby
-# Updates a specific item, returns item updated
+# Update a specific item, return item updated
 StrapiRuby.put(resource: :articles,
                id: 23,
                data: {content: "'I've edited this article via a PUT request'"})
@@ -136,7 +135,7 @@ StrapiRuby.put(resource: :articles,
 #### .delete
 
 ```ruby
-# Deletes an item, returns item deleted
+# Delete an item, return item deleted
 StrapiRuby.delete(resource: :articles, id: 12)
 
 ```
@@ -151,9 +150,13 @@ See [`.escape_empty_answer`](#gracefuly-degrade-errors-when-they-happen)
 
 The query is built using a transverse hash function similar to Javascript `qs` library used by Strapi.
 
-Instead parameters should be passed as a hash and you can use symbols instead of strings - except for the operators of the filters used as keys. Integers, eg. for ID, must be passed as strings.
+Instead parameters should be passed as a hash to their key and you can use symbols instead of strings.
+
+Only exceptions are for the `operators` of the filters used as keys. Also, Integers, eg. for ID, must be passed as strings.
 
 Full parameters documentation from Strapi is available [here](https://docs.strapi.io/dev-docs/api/rest/parameters).
+
+You can also use their interactive query builder. Just remember to convert the result correctly the resulting JS object to a hash with correct keys and values.
 
 #### populate
 
@@ -381,7 +384,7 @@ You can pass more options via the config block.
 
 ### Show Endpoint
 
-This option is for accessing the resulting endpoint, ie. `strapi_server_uri` and its query, it is useful for debugging. It defaults to `false`.
+This option is for accessing the resulting endpoint, ie. `strapi_server_uri` + its query, it is useful for debugging. It defaults to `false`.
 
 ```ruby
 # Pass this as a parameter to the config block
@@ -405,7 +408,7 @@ Or directly in the options parameters
 
 ### DateTime Conversion
 
-By default, any `createdAt`, `publishedAt` and `updatedAt` fields in the answer will be recursively converted to `DateTime` instances, making it easy to use `#strftime` method, you can consult its documentation [here](https://ruby-doc.org/stdlib-2.6.1/libdoc/date/rdoc/DateTime.html#method-i-strftime).
+By default, any `createdAt`, `publishedAt` and `updatedAt` fields in the answer will be recursively converted to `DateTime` instances, making it easy to use [`#strftime`](https://ruby-doc.org/stdlib-2.6.1/libdoc/date/rdoc/DateTime.html#method-i-strftime) method.
 
 But if you don't want this conversion, pass it to the configure block.
 
@@ -491,7 +494,7 @@ class JSONParsingError < ClientError
 
 #### Gracefuly degrade errors when they happen
 
-One way to handle errors and gracefuly degrade is using `.escape_empty_answer`.
+One way to handle errors and gracefuly degrade is using `.escape_empty_answer` and use a block to nest your data accessing code.
 
 ##### Definition
 
@@ -514,7 +517,7 @@ end
 <% end %>
 ```
 
-Or you may want to handle specific errors like this also: 
+Or you may want to handle specific errors like this:
 
 ```ruby
 # some_controller.rb
