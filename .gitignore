@@ -12,3 +12,6 @@
 
 # Environment file
 .env 
+
+# Built gems 
+*.gem
