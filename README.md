@@ -531,6 +531,8 @@ class JSONParsingError < ClientError
 
 One way to handle errors and gracefuly degrade is using `.escape_empty_answer` and use a block to nest your data accessing code.
 
+Errors will still be logged in red in console.
+
 ##### Definition
 
 ```ruby
