@@ -8,7 +8,9 @@ namespace :strapi_ruby do
     config_file = File.join(initializers_dir, "strapi_ruby.rb")
 
     # Check if the configuration file exists, and create it with default content if not
-    unless File.exist?(config_file)
+    if File.exist?(config_file)
+      puts "StrapiRuby configuration file already exists."
+    else
       # Define the configuration data (contents of strapi_ruby.rb)
       config = <<-CONFIG
   # Your StrapiRuby configuration goes here
@@ -20,6 +22,7 @@ namespace :strapi_ruby do
   end
   CONFIG
       File.write(config_file, config)
+      puts "StrapiRuby configuration file created at config/initializers/strapi_ruby.rb."
     end
   end
 end

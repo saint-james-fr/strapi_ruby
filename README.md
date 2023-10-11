@@ -19,13 +19,14 @@ I think it's one of the actual coolest solution for integrating a CMS into Rails
     - [post](#post)
     - [put](#put)
     - [delete](#delete)
+  - [Basic Example: Rails](#basic-example-rails)
   - [Strapi Parameters](#strapi-parameters):
     - [populate](#populate)
     - [fields](#fields)
     - [sort](#sort)
     - [filters](#filters)
     - [page, page_size](#pagination-by-page-page--page_size)
-    - [start, limit](#pagination-by-page-start--limit)
+    - [start, limit](#pagination-by-offset-start--limit)
     - [locale](#locale)
     - [publication_state](#publication_state)
   - [Use raw query](#use-raw-query)
@@ -151,6 +152,30 @@ StrapiRuby.delete(resource: :articles, id: 12)
 #### .escape_empty_answer
 
 See [`.escape_empty_answer`](#gracefuly-degrade-errors-when-they-happen)
+
+### Basic Example: Rails
+
+```ruby
+# pages_controller.rb
+
+def home
+@articles = StrapiRuby.get(resource: :articles)
+end
+```
+
+```ruby
+# home.html.erb
+
+<% StrapiRuby.escape_empty_answer(@articles) do %>
+  <ul>
+    <% @articles.data.each do |article| %>
+      <li>
+        <%= article.attributes.title %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+```
 
 ### Strapi Parameters
 
@@ -512,7 +537,7 @@ One way to handle errors and gracefuly degrade is using `.escape_empty_answer` a
 # Definition
 module StrapiRuby
   def escape_empty_answer(answer)
-    return answer.error.message if answer.data.nil? || answer.data.empty?
+    return answer.error.message if answer.data.nil?
     yield
   end
 end
@@ -542,7 +567,7 @@ end
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/saint-james-fr/strapi_ruby. This project is intended to be a safe, welcoming space for collaboration.
+Bug reports and pull requests are welcome on GitHub at [https://github.com/saint-james-fr/strapi_ruby](https://github.com/saint-james-fr/strapi_ruby). This project is intended to be a safe, welcoming space for collaboration.
 
 ## Tests
 
