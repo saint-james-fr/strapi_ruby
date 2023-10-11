@@ -46,20 +46,14 @@ Add this line to your application's Gemfile:
     gem "strapi_ruby"
 ```
 
-Then if you use Rails, run in your terminal:
+Then if you use Rails, run in your terminal to generate a config initializer. Otherwise copy paste and fill the config block.
 
 ```bash
-rake strapi_ruby:install
+rake strapi_ruby:config
 ```
 
-This will generate a config file for you. If you're not using Rails, copy paste the config code below before using the gem.
-
-##### IMPORTANT
-
-Don't forget the trailing `/api` in your uri and don't finish it with a trailing slash.
-
 ```ruby
-# config/strapi_ruby.rb
+# config/initializer/strapi_ruby.rb
 
 # Don't
 StrapiRuby.configure do |config|
@@ -72,9 +66,12 @@ StrapiRuby.configure do |config|
   config.strapi_server_uri = ENV["STRAPI_SERVER_URI"]
   config.strapi_token = ENV["STRAPI_SERVER_TOKEN"]
 end
-
-# Always store in environment variables or Rails credentials
 ```
+
+##### IMPORTANT
+
+- Always store sensible values in environment variables or Rails credentials
+- Don't forget the trailing `/api` in your uri and don't finish it with a trailing slash.
 
 And you're ready to fetch some data!
 

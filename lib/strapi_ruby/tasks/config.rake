@@ -1,7 +1,6 @@
 namespace :strapi_ruby do
-  desc "Generate a default configuration file for Rails applications"
-  task :install do
-    return unless defined?(Rails)
+  desc "Generates a configuration file within Rails applications"
+  task :config do
     # Directory path for the config directory
     initializers_dir = File.join(Rails.root, "config", "initializers")
 

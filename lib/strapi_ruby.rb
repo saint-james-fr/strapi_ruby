@@ -17,11 +17,11 @@ require_relative "strapi_ruby/errors/client_error"
 require_relative "strapi_ruby/errors/configuration_error"
 require_relative "strapi_ruby/errors/error_message"
 
+# Load Rake tasks within Rails applications
+require_relative "strapi_ruby/railtie" if defined?(Rails)
+
 module StrapiRuby
   extend Configuration
   extend Interface
 end
-
-# Load Rake tasks if Rake is defined
-load "tasks/generate_config.rake" if defined?(Rake)
 
