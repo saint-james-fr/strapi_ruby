@@ -400,7 +400,7 @@ StrapiRuby.get(resource: :articles, locale: :fr)
 
 #### publication_state
 
-Use `preview` or `live`
+Use `:preview` or `:live`
 
 ```ruby
 StrapiRuby.get(resource: :articles, publication_state: :preview)
