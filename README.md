@@ -47,13 +47,15 @@ Add this line to your application's Gemfile:
 
 ```ruby
 # Gemfile
-
     gem "strapi_ruby"
 ```
+
+
 
 Then if you use Rails, run in your terminal to generate a config initializer. Otherwise copy paste and fill the config block.
 
 ```bash
+bundle
 rake strapi_ruby:config
 ```
 
