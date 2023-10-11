@@ -15,10 +15,11 @@ I think it's one of the actual coolest solution for integrating a CMS into Rails
 - [Installation](#installation)
 - Usage:
   - [API](#api):
-    - [get](#get)
-    - [post](#post)
-    - [put](#put)
-    - [delete](#delete)
+    - [.get](#get)
+    - [.post](#post)
+    - [.put](#put)
+    - [.delete](#delete)
+    - [.escape_empty_answer](#escape_empty_answer)
   - [Basic Example: Rails](#basic-example-rails)
   - [Strapi Parameters](#strapi-parameters):
     - [populate](#populate)
@@ -154,7 +155,7 @@ StrapiRuby.delete(resource: :articles, id: 12)
 
 #### .escape_empty_answer
 
-See [`.escape_empty_answer`](#graceful-degradation)
+See [`Graceful degradation`](#graceful-degradation)
 
 ### Basic Example: Rails
 
