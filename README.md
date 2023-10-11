@@ -61,10 +61,19 @@ Don't forget the trailing `/api` in your uri and don't finish it with a trailing
 ```ruby
 # config/strapi_ruby.rb
 
+# Don't
 StrapiRuby.configure do |config|
-    config.strapi_server_uri = "http://localhost:1337/api"
-    config.strapi_token = "YOUR_TOKEN"
-  end
+  config.strapi_server_uri = "http://localhost:1337/api"
+  config.strapi_token = "YOUR_TOKEN"
+end
+
+# Do
+StrapiRuby.configure do |config|
+  config.strapi_server_uri = ENV["STRAPI_SERVER_URI"]
+  config.strapi_token = ENV["STRAPI_SERVER_TOKEN"]
+end
+
+# Always store in environment variables or Rails credentials
 ```
 
 And you're ready to fetch some data!
@@ -91,7 +100,7 @@ answer = StrapiRuby.get(resource: "articles")
 data = answer.data
 meta = answer.meta
 
-# You access a specific attribute like this
+# Access a specific attribute
 answer = StrapiRuby.get(resource: :articles, id: 2)
 article = answer.data
 title = article.attributes.title
@@ -100,6 +109,8 @@ title = article.attributes.title
 data = answer.data # => nil
 meta = answer.meta # => nil
 error = answer.error.message # => ErrorType:ErrorMessage
+endpoint = answer.endpoint
+# => "https://localhost:1337/api/restaurants?filters[title][$contains]=this+does+not+exists
 ```
 
 #### .get
@@ -384,7 +395,9 @@ You can pass more options via the config block.
 
 ### Show Endpoint
 
-This option is for accessing the resulting endpoint, ie. `strapi_server_uri` + its query, it is useful for debugging. It defaults to `false`.
+This option is for accessing the resulting endpoint in a **successful** error, ie. `strapi_server_uri` + its query.
+
+It defaults to `false`.
 
 ```ruby
 # Pass this as a parameter to the config block
