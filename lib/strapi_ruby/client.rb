@@ -10,17 +10,17 @@ module StrapiRuby
     end
 
     def get(endpoint)
-      response = perform_request { @connection.get(endpoint) }
+      response = performs_request { @connection.get(endpoint) }
       handle_response(response)
     end
 
     def post(endpoint, body)
-      response = perform_request { @connection.post(endpoint, build_data_payload(body)) }
+      response = performs_request { @connection.post(endpoint, build_data_payload(body)) }
       handle_response(response)
     end
 
     def put(endpoint, body)
-      response = perform_request { @connection.put(endpoint, build_data_payload(body)) }
+      response = performs_request { @connection.put(endpoint, build_data_payload(body)) }
       handle_response(response)
     end
 
