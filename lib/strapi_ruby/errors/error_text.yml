@@ -11,3 +11,6 @@ expected_integer: Invalid argument type. Expected Integer.
 expected_proc: Invalid argument type. Expected Proc.
 publication_state: Invalid argument. Expected :live or :preview.
 pagination: Use a single pagination method, either by page or by offset
+strapi_server_status: There is an error from the Strapi server with status
+faraday_connection: There is an error while implementing connection with Faraday
+configuration: You must configure StrapiRuby before using it. See README.md for details.

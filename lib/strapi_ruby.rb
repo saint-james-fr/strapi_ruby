@@ -13,6 +13,7 @@ require_relative "strapi_ruby/configuration"
 require_relative "strapi_ruby/config"
 
 # Load errors
+require_relative "strapi_ruby/errors/logger"
 require_relative "strapi_ruby/errors/client_error"
 require_relative "strapi_ruby/errors/configuration_error"
 require_relative "strapi_ruby/errors/error_message"
@@ -24,4 +25,3 @@ module StrapiRuby
   extend Configuration
   extend Interface
 end
-

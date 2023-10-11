@@ -36,6 +36,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   # Uncomment to register a new dependency of your gem
+  spec.add_dependency "colorize", "~> 1.1.0"
   spec.add_dependency "faraday", "~> 2.7"
   spec.add_dependency "redcarpet", "~> 3.6"
 
