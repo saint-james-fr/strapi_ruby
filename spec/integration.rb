@@ -3,6 +3,17 @@ require "dotenv"
 
 Dotenv.load
 
+# To run this test, just run ruby spec/integration.rb from root
+# 1. It will need a Strapi Server
+# 2. StrapiRuby configuration shall be provided
+# 3. See at the end of the file the tests to run
+
+# ON STRAPI
+# Create a Content-type called "articles" with a "title" and "content" field
+# and create three articles to test the API
+# use these titles: "my first article", "my second article", "my third article"
+# use a featuredMedia field to test the populate feature, at least on the first article
+
 # Configure StrapiRuby
 def configure_strapi
   StrapiRuby.configure do |config|
@@ -13,11 +24,6 @@ def configure_strapi
   end
 end
 
-# ON STRAPI
-# Create a Content-type called "articles" with a "title" and "content" field
-# and create three articles to test the API
-# use these titles: "my first article", "my second article", "my third article"
-# use a featuredMedia field to test the populate feature, at least on the first article
 
 # Test fetching all articles
 def test_get_all_articles
