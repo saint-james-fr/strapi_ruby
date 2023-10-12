@@ -59,13 +59,27 @@ end
 
 # Test complex filtering
 def test_complex_filtering
-  test_get = StrapiRuby.get(resource: "articles", fields: :title, filters: {
-                              "$or" => [
-                                { title: { "$contains" => "third" } },
-                                { title: { "$contains" => "second" } },
-                              ],
-                            })
-  test_get.data
+  test_get= StrapiRuby.get(resource: :books,
+  filters: {
+    "$or" => [
+      {
+        date: {
+          "$eq" => "2020-01-01",
+        },
+      },
+      {
+        date: {
+          "$eq" => "2020-01-02",
+        },
+      },
+    ],
+    author: {
+      name: {
+        "$eq" => "Kai doe",
+      },
+    },
+  })
+  test_get.endpoint
 end
 
 # Test raw query
@@ -154,7 +168,7 @@ tests = [
   # :test_delete_article,
   # :test_sorting,
   # :test_filtering,
-  # :test_complex_filtering,
+  :test_complex_filtering,
   # :test_pagination,
   # :test_offset_pagination,
   # :test_locale,

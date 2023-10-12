@@ -169,7 +169,7 @@ def home
 end
 ```
 
-```ruby
+```erb
 # home.html.erb
 
 <% StrapiRuby.escape_empty_answer(@articles) do %>
@@ -333,7 +333,7 @@ StrapiRuby.get(resource: :restaurants,
 # --------------------------------
 
 # Complex filtering with $and and $or
-RubyStrapi.get(resource: :books,
+StrapiRuby.get(resource: :books,
                filters: {
                  "$or" => [
                    {
