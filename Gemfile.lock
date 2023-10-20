@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    strapi_ruby (0.1.2)
+    strapi_ruby (0.1.4)
       colorize (~> 1.1.0)
       faraday (~> 2.7)
       redcarpet (~> 3.6)
