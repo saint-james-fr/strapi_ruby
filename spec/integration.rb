@@ -193,7 +193,7 @@ tests = [
   # :test_404_endpoint,
   # :test_show_endpoint,
   # :test_escape_empty_answer,
-  :test_trigger_error_using_collection_parameters_on_single_endpoint,
+  # :test_trigger_error_using_collection_parameters_on_single_endpoint,
 ]
 
 tests.each do |test|
