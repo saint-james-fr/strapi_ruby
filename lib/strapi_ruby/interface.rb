@@ -34,7 +34,7 @@ module StrapiRuby
       meta = answer.meta
 
       return_success_open_struct(data, meta, options)
-    rescue StrapiRuby::ClientError, StrapiRuby::ConfigError => e
+    rescue StrapiRuby::ClientError, StrapiRuby::ConfigurationError => e
       return_error_open_struct(e, options)
     end
 

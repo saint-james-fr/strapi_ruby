@@ -155,6 +155,21 @@ def test_escape_empty_answer
   answer
 end
 
+def test_trigger_error_using_collection_parameters_on_single_endpoint
+  begin 
+  StrapiRuby.get(resource: "articles", id: 1, page: 1)
+  rescue ArgumentError => e
+  puts e.message
+  puts "if you see this, it means the test is passing"
+  end
+  begin 
+  StrapiRuby.get(resource: "articles", id: 1, filters: { id: { "$in" => ["1", "3"] } })
+  rescue ArgumentError => e
+  puts e.message
+  puts "if you see this, it means the test is passing"
+  end
+end
+
 # Main execution
 configure_strapi
 puts "\n\n"
@@ -168,7 +183,7 @@ tests = [
   # :test_delete_article,
   # :test_sorting,
   # :test_filtering,
-  :test_complex_filtering,
+  # :test_complex_filtering,
   # :test_pagination,
   # :test_offset_pagination,
   # :test_locale,
@@ -178,6 +193,7 @@ tests = [
   # :test_404_endpoint,
   # :test_show_endpoint,
   # :test_escape_empty_answer,
+  :test_trigger_error_using_collection_parameters_on_single_endpoint,
 ]
 
 tests.each do |test|
