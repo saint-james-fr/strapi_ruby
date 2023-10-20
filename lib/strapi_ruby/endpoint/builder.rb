@@ -17,10 +17,10 @@ module StrapiRuby
       private
 
       def build_endpoint
-        @result = if builds_collection?
-                    "#{base_uri}/#{@resource}/#{@id}"
-                  else
+        @result = if collection?
                     "#{base_uri}/#{@resource}"
+                  else
+                    "#{base_uri}/#{@resource}/#{@id}"
                   end
       end
 
@@ -28,8 +28,8 @@ module StrapiRuby
         @result += @query if @query
       end
 
-      def builds_collection?
-        !@id.nil?
+      def collection?
+        @id.nil?
       end
 
       def base_uri

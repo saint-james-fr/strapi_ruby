@@ -6,6 +6,7 @@ module StrapiRuby
       private
 
       def sort(args)
+        check_collection
         build_query_from_args(args, :sort)
       end
 
@@ -18,6 +19,7 @@ module StrapiRuby
       end
 
       def filters(args)
+        check_collection
         build_query_from_args(args, :filters)
       end
 
@@ -25,53 +27,37 @@ module StrapiRuby
         raise TypeError, "#{ErrorMessage.expected_integer} Got #{number.class.name}" unless number.is_a?(Integer)
 
         check_single_pagination
+        check_collection
         @result += "#{prefix}pagination[pageSize]=#{number}"
       end
 
-      # Sets the page number for the query result.
-      #
-      # @param number [Integer] An Integer representing the page number.
-      #
-      # @return [String] The updated query string with the page number option added.
       def page(number)
         raise TypeError, "#{ErrorMessage.expected_integer} Got #{number.class.name}" unless number.is_a?(Integer)
 
         check_single_pagination
+        check_collection
         @result += "#{prefix}pagination[page]=#{number}"
       end
 
-      # Sets the offset for the query result.
-      #
-      # @param number [Integer] An Integer representing the offset.
-      #
-      # @return [String] The updated query string with the offset option added.
       def start(number)
         raise TypeError, "#{ErrorMessage.expected_integer} Got #{number.class.name}" unless number.is_a?(Integer)
 
         check_single_pagination
+        check_collection
         @result += "#{prefix}pagination[start]=#{number}"
       end
 
-      # Sets the limit for the query result.
-      #
-      # @param number [Integer] An Integer representing the limit.
-      #
-      # @return [String] The updated query string with the limit option added.
       def limit(number)
         raise TypeError unless number.is_a?(Integer)
 
         check_single_pagination
+        check_collection
         @result += "#{prefix}pagination[limit]=#{number}"
       end
 
-      ##
-      # Sets the locale for the query result.
-      #
-      # @params arg [String, Symbol] A String or Symbol representing the locale.
-      #
-      # @return [String] The updated query string with the locale option added.
       def locale(arg)
         raise TypeError, "#{ErrorMessage.expected_string_symbol} Got #{arg.class.name}" unless arg.is_a?(String) || arg.is_a?(Symbol)
+        check_collection
 
         @result += "#{prefix}locale=#{arg}"
       end
@@ -79,12 +65,11 @@ module StrapiRuby
       def publication_state(arg)
         raise TypeError, "#{ErrorMessage.expected_string_symbol} Got #{arg.class.name}" unless arg.is_a?(String) || arg.is_a?(Symbol)
         raise ArgumentError, "#{ErrorMessage.publication_state} Got #{arg}" unless arg.to_sym == :live || arg.to_sym == :preview
+        check_collection
 
         @result += "#{prefix}publicationState=#{arg}"
       end
 
-      # Checks params don't combine pagination methods.
-      #
       def check_single_pagination
         return unless (@options.key?(:page) && @options.key?(:start)) ||
                       (@options.key(:page) && @options.key?(:limit)) ||
@@ -94,9 +79,16 @@ module StrapiRuby
         raise ArgumentError, ErrorMessage.pagination
       end
 
-      # builds the prefix for the query string (either "?" or "&" depending on whether the query string is empty or not).
-      #
-      # @return [String] A String representing the prefix.
+      def collection?
+        @options[:id].nil?
+      end
+
+      def check_collection
+        return if collection?
+
+        raise ArgumentError, ErrorMessage.collection_query
+      end
+
       def prefix
         @result.empty? ? "?" : "&"
       end
