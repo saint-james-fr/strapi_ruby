@@ -57,6 +57,7 @@ module StrapiRuby
 
       def locale(arg)
         raise TypeError, "#{ErrorMessage.expected_string_symbol} Got #{arg.class.name}" unless arg.is_a?(String) || arg.is_a?(Symbol)
+
         check_collection
 
         @result += "#{prefix}locale=#{arg}"
@@ -65,6 +66,7 @@ module StrapiRuby
       def publication_state(arg)
         raise TypeError, "#{ErrorMessage.expected_string_symbol} Got #{arg.class.name}" unless arg.is_a?(String) || arg.is_a?(Symbol)
         raise ArgumentError, "#{ErrorMessage.publication_state} Got #{arg}" unless arg.to_sym == :live || arg.to_sym == :preview
+
         check_collection
 
         @result += "#{prefix}publicationState=#{arg}"
