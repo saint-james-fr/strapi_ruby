@@ -1,5 +1,9 @@
 ## [0.1.3] - 2023-10-20
 
+- Added error message for collection_query error
+
+## [0.1.3] - 2023-10-20
+
 - Check for errors when using collection strapi parameters like sort/filters... on single items
 - Fix Typo on ConfigError => ConfigurationError
 
