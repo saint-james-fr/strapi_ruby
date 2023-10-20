@@ -14,3 +14,4 @@ pagination: Use a single pagination method, either by page or by offset
 strapi_server_status: There is an error from the Strapi server with status
 faraday_connection: There is an error while implementing connection with Faraday
 configuration: You must configure StrapiRuby before using it. See README.md for details.
+collection_query: You try to use Strapi parameters on a single item but they should be used on a collection.
