@@ -20,9 +20,9 @@ module StrapiRuby
       return unless StrapiRuby.config.convert_to_datetime
 
       if collection?(data)
-        data.each { |item| parse_into_datetime!(item.attributes) }
+        data.each { |item| parse_into_datetime!(item) }
       else
-        parse_into_datetime!(data.attributes)
+        parse_into_datetime!(data)
       end
     end
 
@@ -62,9 +62,9 @@ module StrapiRuby
 
     def convert_to_html!(data)
       if collection?(data)
-        data.each { |item| convert_attributes!(item.attributes) }
+        data.each { |item| convert_attributes!(item) }
       else
-        convert_attributes!(data.attributes)
+        convert_attributes!(data)
       end
     end
 
