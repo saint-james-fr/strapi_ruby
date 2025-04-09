@@ -129,13 +129,13 @@ end
 
 # Test put article
 def test_put_article
-  document_id = StrapiRuby.get(resource: "articles", sort: "createdAt:asc").data.last.id
+  document_id = StrapiRuby.get(resource: "articles", sort: "createdAt:asc").data.last.documentId
   StrapiRuby.put(resource: "articles", document_id: document_id, data: { title: "Title has been changed by PUT request" })
 end
 
 # Test delete article
 def test_delete_article
-  document_id = StrapiRuby.get(resource: "articles", sort: "createdAt:asc").data.last.id
+  document_id = StrapiRuby.get(resource: "articles", sort: "createdAt:asc").data.last.documentId
   StrapiRuby.delete(resource: "articles", document_id: document_id)
 end
 
@@ -177,9 +177,9 @@ puts "\n\n"
 tests = [
  # :test_get_all_articles,
    # :test_get_one_article,
-   # :test_post_article,
-   # :test_put_article,
-   # :test_delete_article,
+  #  :test_post_article,
+  #  :test_put_article,
+   :test_delete_article,
    # :test_sorting,
    # :test_filtering,
    # :test_complex_filtering,
