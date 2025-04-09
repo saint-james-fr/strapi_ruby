@@ -4,20 +4,20 @@ RSpec.describe StrapiRuby::Client do
   let(:client) { StrapiRuby::Client.new(strapi_server_uri: "https://www.example.com") }
 
   before do
-    stub_request(:get, "https://www.example.com/articles/1").to_return(status: 200, body: '{"data": {"attributes":{"id": 1, "title": "Example"}}}')
-    stub_request(:post, "https://www.example.com/articles").to_return(status: 200, body: '{"data": {"attributes": {"title": "This is a new example"}}}')
-    stub_request(:put, "https://www.example.com/articles/1").to_return(status: 200, body: '{"data": {"attributes": {"title": "This is a modified example"}}}')
-    stub_request(:delete, "https://www.example.com/articles/1").to_return(status: 200, body: '{"data": {"attributes": {"title": "This is a deleted example"}}}')
+    stub_request(:get, "https://www.example.com/articles/clkgylw7d000108lc4rw1bb6s").to_return(status: 200, body: '{"data" :{"documentId": "clkgylw7d000108lc4rw1bb6s", "title": "Example"}}')
+    stub_request(:post, "https://www.example.com/articles").to_return(status: 200, body: '{"data": {"documentId": "clkgylw7d000108lc4rw1bb6s", "title": "This is a new example"}}')
+    stub_request(:put, "https://www.example.com/articles/clkgylw7d000108lc4rw1bb6s").to_return(status: 200, body: '{"data": {"documentId": "clkgylw7d000108lc4rw1bb6s", "title": "This is a modified example"}}')
+    stub_request(:delete, "https://www.example.com/articles/clkgylw7d000108lc4rw1bb6s").to_return(status: 200, body: '{"data": {"documentId": "clkgylw7d000108lc4rw1bb6s", "title": "This is a deleted example"}}')
   end
 
   describe "#get" do
     it "sends a GET request to the specified endpoint" do
-      faraday_response = client.connection.get("/articles/1")
+      faraday_response = client.connection.get("/articles/clkgylw7d000108lc4rw1bb6s")
       expect(faraday_response.status).to eq(200)
     end
 
     it "returns an OpenStruct object" do
-      response = client.get("/articles/1")
+      response = client.get("/articles/clkgylw7d000108lc4rw1bb6s")
       expect(response.class).to eq(OpenStruct)
     end
 
@@ -41,7 +41,7 @@ RSpec.describe StrapiRuby::Client do
       expect(faraday_response.status).to eq(200)
       response = client.post("/articles", { title: "This is a new example" })
       p
-      expect(response.data.attributes.title).to eq("This is a new example")
+      expect(response.data.title).to eq("This is a new example")
     end
 
     it "returns an OpenStruct object" do
@@ -65,57 +65,57 @@ RSpec.describe StrapiRuby::Client do
 
   describe "#put" do
     it "sends a PUT request to the specified endpoint" do
-      faraday_response = client.connection.put("/articles/1", { title: "This is a modified example" })
+      faraday_response = client.connection.put("/articles/clkgylw7d000108lc4rw1bb6s", { title: "This is a modified example" })
       expect(faraday_response.status).to eq(200)
 
-      response = client.put("/articles/1", { title: "This is a modified example" })
-      expect(response.data.attributes.title).to eq("This is a modified example")
+      response = client.put("/articles/clkgylw7d000108lc4rw1bb6s", { title: "This is a modified example" })
+      expect(response.data.title).to eq("This is a modified example")
     end
 
     it "returns an OpenStruct object" do
-      response = client.put("/articles/1", { title: "This is a modified example" })
+      response = client.put("/articles/clkgylw7d000108lc4rw1bb6s", { title: "This is a modified example" })
       expect(response.class).to eq(OpenStruct)
     end
 
     it "handles connection errors gracefully" do
       allow_any_instance_of(Faraday::Connection).to receive(:put).and_raise(Faraday::ConnectionFailed.new("Connection failed"))
-      expect { client.put("/resource/1", {}) }.to raise_error(StrapiRuby::ConnectionError)
+      expect { client.put("/resource/clkgylw7d000108lc4rw1bb6s", {}) }.to raise_error(StrapiRuby::ConnectionError)
     end
     it "handles timeout errors gracefully" do
       allow_any_instance_of(Faraday::Connection).to receive(:put).and_raise(Faraday::TimeoutError.new("Timeout Error"))
-      expect { client.put("/resource/1", {}) }.to raise_error(StrapiRuby::ConnectionError)
+      expect { client.put("/resource/clkgylw7d000108lc4rw1bb6s", {}) }.to raise_error(StrapiRuby::ConnectionError)
     end
     it "handles other errors gracefully" do
       allow_any_instance_of(Faraday::Connection).to receive(:put).and_raise(StandardError.new("Something bad happened"))
-      expect { client.put("/resource/1", {}) }.to raise_error(StrapiRuby::ConnectionError)
+      expect { client.put("/resource/clkgylw7d000108lc4rw1bb6s", {}) }.to raise_error(StrapiRuby::ConnectionError)
     end
   end
 
   describe "#delete" do
     it "sends a DELETE request to the specified endpoint" do
-      faraday_response = client.connection.delete("/articles/1")
+      faraday_response = client.connection.delete("/articles/clkgylw7d000108lc4rw1bb6s")
       expect(faraday_response.status).to eq(200)
 
-      response = client.delete("/articles/1")
-      expect(response.data.attributes.title).to eq("This is a deleted example")
+      response = client.delete("/articles/clkgylw7d000108lc4rw1bb6s")
+      expect(response.data.title).to eq("This is a deleted example")
     end
 
     it "returns an OpenStruct object" do
-      response = client.put("/articles/1", { title: "This is a deleted example" })
+      response = client.put("/articles/clkgylw7d000108lc4rw1bb6s", { title: "This is a deleted example" })
       expect(response.class).to eq(OpenStruct)
     end
 
     it "handles connection errors gracefully" do
       allow_any_instance_of(Faraday::Connection).to receive(:delete).and_raise(Faraday::ConnectionFailed.new("Connection failed"))
-      expect { client.delete("/resource/1") }.to raise_error(StrapiRuby::ConnectionError)
+      expect { client.delete("/resource/clkgylw7d000108lc4rw1bb6s") }.to raise_error(StrapiRuby::ConnectionError)
     end
     it "handles timeout errors gracefully" do
       allow_any_instance_of(Faraday::Connection).to receive(:delete).and_raise(Faraday::TimeoutError.new("Timeout Error"))
-      expect { client.delete("/resource/1") }.to raise_error(StrapiRuby::ConnectionError)
+      expect { client.delete("/resource/clkgylw7d000108lc4rw1bb6s") }.to raise_error(StrapiRuby::ConnectionError)
     end
     it "handles other errors gracefully" do
       allow_any_instance_of(Faraday::Connection).to receive(:delete).and_raise(StandardError.new("Something bad happened"))
-      expect { client.delete("/resource/1") }.to raise_error(StrapiRuby::ConnectionError)
+      expect { client.delete("/resource/clkgylw7d000108lc4rw1bb6s") }.to raise_error(StrapiRuby::ConnectionError)
     end
   end
 
@@ -146,15 +146,15 @@ RSpec.describe StrapiRuby::Client do
 
   describe "#handle_response" do
     context "when the response status is 200" do
-      let(:response) { double(status: 200, message: "OK", body: '{"data": {"id": 1, "name": "Example"}}') }
+      let(:response) { double(status: 200, message: "OK", body: '{"data": {"documentId": "clkgylw7d000108lc4rw1bb6s", "title": "Example"}}') }
 
       it "returns an OpenStruct object" do
         expect(client.send(:handle_response, response)).to be_a(OpenStruct)
       end
 
       it "parses the JSON data into the OpenStruct object" do
-        expect(client.send(:handle_response, response).data.id).to eq(1)
-        expect(client.send(:handle_response, response).data.name).to eq("Example")
+        expect(client.send(:handle_response, response).data.documentId).to eq("clkgylw7d000108lc4rw1bb6s")
+        expect(client.send(:handle_response, response).data.title).to eq("Example")
       end
     end
 
