@@ -14,7 +14,7 @@ module StrapiRuby
     def validate_options(options)
       validate_config_presence
       validate_resource(options)
-      validate_id(options)
+      validate_document_id(options)
       validate_show_endpoint_params(options)
       validate_body(options)
     end
@@ -47,8 +47,8 @@ module StrapiRuby
       raise TypeError, "#{ErrorMessage.expected_string_symbol} Got #{options[:resource].class.name}" unless options[:resource].is_a?(String) || options[:resource].is_a?(Symbol)
     end
 
-    def validate_id(options)
-      raise TypeError, "#{ErrorMessage.expected_integer} Got #{options[:id].class.name}" if options.key?(:id) && !options[:id].is_a?(Integer)
+    def validate_document_id(options)
+      raise TypeError, "#{ErrorMessage.expected_integer} Got #{options[:document_id].class.name}" if options.key?(:document_id) && !options[:document_id].is_a?(String)
     end
 
     def validate_show_endpoint_params(options)
