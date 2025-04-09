@@ -48,7 +48,7 @@ module StrapiRuby
     end
 
     def validate_document_id(options)
-      raise TypeError, "#{ErrorMessage.expected_integer} Got #{options[:document_id].class.name}" if options.key?(:document_id) && !options[:document_id].is_a?(String)
+      raise TypeError, "#{ErrorMessage.expected_string} Got #{options[:document_id].class.name}" if options.key?(:document_id) && !options[:document_id].is_a?(String)
     end
 
     def validate_show_endpoint_params(options)
