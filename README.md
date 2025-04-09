@@ -20,6 +20,8 @@ Starting from version >=1.0.0, the StrapiRuby gem is only compatible with Strapi
 
 These changes ensure that the StrapiRuby gem takes full advantage of the improvements in Strapi v5, providing a more streamlined and efficient API interaction experience. Please ensure your Strapi server is updated to version 5 or later to use this version of the gem.
 
+Following will be the documentation for 1.xx release.
+
 ## Table of contents
 
 - [Installation](#installation)
@@ -59,8 +61,6 @@ Add this line to your application's Gemfile:
 # Gemfile
     gem "strapi_ruby"
 ```
-
-
 
 Then if you use Rails, run in your terminal to generate a config initializer. Otherwise copy paste and fill the config block.
 
@@ -117,7 +117,7 @@ meta = answer.meta
 # Access a specific attribute
 answer = StrapiRuby.get(resource: :articles, document_id: "clkgylmcc000008lcdd868feh")
 article = answer.data
-title = article.attributes.title
+title = article.title
 
 # If an error occur, it will be raised to be rescued and displayed in the answer.
 data = answer.data # => nil
@@ -186,7 +186,7 @@ end
   <ul>
     <% @articles.data.each do |article| %>
       <li>
-        <%= article.attributes.title %>
+        <%= article.title %>
       </li>
     <% end %>
   </ul>
