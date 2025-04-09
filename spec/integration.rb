@@ -24,7 +24,6 @@ def configure_strapi
   end
 end
 
-
 # Test fetching all articles
 def test_get_all_articles
   test_get = StrapiRuby.get(resource: "articles")
@@ -33,7 +32,7 @@ end
 
 # Test fetching one article
 def test_get_one_article
-  test_get = StrapiRuby.get(resource: "articles", id: 1)
+  test_get = StrapiRuby.get(resource: "articles", documentId: "1")
   test_get.data
 end
 
@@ -53,32 +52,32 @@ end
 
 # Test filtering
 def test_filtering
-  test_get = StrapiRuby.get(resource: "articles", fields: :title, filters: { id: { "$in" => ["1", "3"] } })
+  test_get = StrapiRuby.get(resource: "articles", fields: :title, filters: { documentId: { "$in" => ["1", "3"] } })
   test_get.data
 end
 
 # Test complex filtering
 def test_complex_filtering
-  test_get= StrapiRuby.get(resource: :books,
-  filters: {
-    "$or" => [
-      {
-        date: {
-          "$eq" => "2020-01-01",
-        },
-      },
-      {
-        date: {
-          "$eq" => "2020-01-02",
-        },
-      },
-    ],
-    author: {
-      name: {
-        "$eq" => "Kai doe",
-      },
-    },
-  })
+  test_get = StrapiRuby.get(resource: :books,
+                            filters: {
+                              "$or" => [
+                                {
+                                  date: {
+                                    "$eq" => "2020-01-01",
+                                  },
+                                },
+                                {
+                                  date: {
+                                    "$eq" => "2020-01-02",
+                                  },
+                                },
+                              ],
+                              author: {
+                                name: {
+                                  "$eq" => "Kai doe",
+                                },
+                              },
+                            })
   test_get.endpoint
 end
 
@@ -130,14 +129,14 @@ end
 
 # Test put article
 def test_put_article
-  id = StrapiRuby.get(resource: "articles", sort: "createdAt:asc").data.last.id
-  StrapiRuby.put(resource: "articles", id: id, data: { title: "Title has been changed by PUT request" })
+  document_id = StrapiRuby.get(resource: "articles", sort: "createdAt:asc").data.last.id
+  StrapiRuby.put(resource: "articles", document_id: document_id, data: { title: "Title has been changed by PUT request" })
 end
 
 # Test delete article
 def test_delete_article
-  id = StrapiRuby.get(resource: "articles", sort: "createdAt:asc").data.last.id
-  StrapiRuby.delete(resource: "articles", id: id)
+  document_id = StrapiRuby.get(resource: "articles", sort: "createdAt:asc").data.last.id
+  StrapiRuby.delete(resource: "articles", document_id: document_id)
 end
 
 def test_show_endpoint
@@ -145,7 +144,7 @@ def test_show_endpoint
 end
 
 def test_escape_empty_answer
-  answer = StrapiRuby.get(resource: "articles", id: 233)
+  answer = StrapiRuby.get(resource: "articles", document_id: 233)
 
   StrapiRuby.escape_empty_answer(answer) do
     puts "if you see this, it means the test is not passing"
@@ -156,17 +155,17 @@ def test_escape_empty_answer
 end
 
 def test_trigger_error_using_collection_parameters_on_single_endpoint
-  begin 
-  StrapiRuby.get(resource: "articles", id: 1, page: 1)
+  begin
+    StrapiRuby.get(resource: "articles", document_id: 1, page: 1)
   rescue ArgumentError => e
-  puts e.message
-  puts "if you see this, it means the test is passing"
+    puts e.message
+    puts "if you see this, it means the test is passing"
   end
-  begin 
-  StrapiRuby.get(resource: "articles", id: 1, filters: { id: { "$in" => ["1", "3"] } })
+  begin
+    StrapiRuby.get(resource: "articles", document_id: 1, filters: { documentId: { "$in" => ["1", "3"] } })
   rescue ArgumentError => e
-  puts e.message
-  puts "if you see this, it means the test is passing"
+    puts e.message
+    puts "if you see this, it means the test is passing"
   end
 end
 
@@ -176,25 +175,25 @@ puts "\n\n"
 
 # Uncomment and run the desired test functions here
 tests = [
-  # :test_get_all_articles,
-  # :test_get_one_article,
-  # :test_post_article,
-  # :test_put_article,
-  # :test_delete_article,
-  # :test_sorting,
-  # :test_filtering,
-  # :test_complex_filtering,
-  # :test_pagination,
-  # :test_offset_pagination,
-  # :test_locale,
-  # :test_selecting_fields,
-  # :test_populate,
-  # :test_raw_query,
-  # :test_404_endpoint,
-  # :test_show_endpoint,
-  # :test_escape_empty_answer,
-  # :test_trigger_error_using_collection_parameters_on_single_endpoint,
-]
+ # :test_get_all_articles,
+   # :test_get_one_article,
+   # :test_post_article,
+   # :test_put_article,
+   # :test_delete_article,
+   # :test_sorting,
+   # :test_filtering,
+   # :test_complex_filtering,
+   # :test_pagination,
+   # :test_offset_pagination,
+   # :test_locale,
+   # :test_selecting_fields,
+   # :test_populate,
+   # :test_raw_query,
+   # :test_404_endpoint,
+   # :test_show_endpoint,
+   # :test_escape_empty_answer,
+   # :test_trigger_error_using_collection_parameters_on_single_endpoint,
+  ]
 
 tests.each do |test|
   puts "\n\n"
