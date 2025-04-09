@@ -10,6 +10,16 @@
 
 I think it's one of the actual coolest solution for integrating a CMS into Rails for example, so let's dive in!
 
+## Important Notice: Strapi V5 and strapi_ruby
+
+Starting from version >=1.0.0, the StrapiRuby gem is only compatible with Strapi version 5 and above. This update includes significant changes to align with the new response format introduced in Strapi v5. Key changes include:
+
+- **Flattened Response Format**: The `attributes` object has been removed, and fields are now directly part of the `data` object.
+- **ID Handling**: The `id` field has been replaced with `documentId` to uniquely identify resources.
+- **Filter Adjustments**: Filters that previously used `id` should now use `documentId`.
+
+These changes ensure that the StrapiRuby gem takes full advantage of the improvements in Strapi v5, providing a more streamlined and efficient API interaction experience. Please ensure your Strapi server is updated to version 5 or later to use this version of the gem.
+
 ## Table of contents
 
 - [Installation](#installation)
