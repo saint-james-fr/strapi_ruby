@@ -151,7 +151,7 @@ StrapiRuby.put(resource: :articles,
 
 ```ruby
 # Delete an item, return item deleted
-StrapiRuby.delete(resource: :articles, id: "clkgylmcc000008lcdd868feh")
+StrapiRuby.delete(resource: :articles, document_id: "clkgylmcc000008lcdd868feh")
 
 ```
 
