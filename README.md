@@ -105,7 +105,7 @@ data = answer.data
 meta = answer.meta
 
 # Access a specific attribute
-answer = StrapiRuby.get(resource: :articles, id: 2)
+answer = StrapiRuby.get(resource: :articles, document_id: "clkgylmcc000008lcdd868feh")
 article = answer.data
 title = article.attributes.title
 
@@ -125,7 +125,7 @@ answer = StrapiRuby.get(resource: :restaurants)
 
 
 # Get a specific element
-StrapiRuby.get(resource: :restaurants, id: 1)
+StrapiRuby.get(resource: :restaurants, document_id: "clkgylmcc000008lcdd868feh")
 ```
 
 #### .post
@@ -143,7 +143,7 @@ StrapiRuby.post(resource: :articles,
 ```ruby
 # Update a specific item, return item updated
 StrapiRuby.put(resource: :articles,
-               id: 23,
+               document_id: "clkgylmcc000008lcdd868feh",
                data: {content: "'I've edited this article via a PUT request'"})
 ```
 
@@ -151,7 +151,7 @@ StrapiRuby.put(resource: :articles,
 
 ```ruby
 # Delete an item, return item deleted
-StrapiRuby.delete(resource: :articles, id: 12)
+StrapiRuby.delete(resource: :articles, id: "clkgylmcc000008lcdd868feh")
 
 ```
 
@@ -324,11 +324,11 @@ StrapiRuby.get(resource: :users, filters: { username: { "$eq" => "John" } })
 # Using $in operator to match multiples values
 StrapiRuby.get(resource: :restaurants,
                filters: {
-                 id: {
-                   "$in" => ["3", "6", "8"],
+                 documentId: {
+                   "$in" => ["clkgylmcc000008lcdd868feh", "clkgylw7d000108lc4rw1bb6s"],
                  },
                })
-# => /restaurants?filters[id][$in][0]=3&filters[id][$in][1]=6&filters[id][$in][2]=8
+# => /restaurants?filters[documentId][$in][0]=clkgylmcc000008lcdd868feh&filters[documentId][$in][0]=clkgylw7d000108lc4rw1bb6s
 
 # --------------------------------
 
