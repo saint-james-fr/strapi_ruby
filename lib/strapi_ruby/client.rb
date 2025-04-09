@@ -40,7 +40,8 @@ module StrapiRuby
                           "User-Agent" => "StrapiRuby/#{StrapiRuby::VERSION}" }
 
       Faraday.new(url: url) do |faraday|
-        faraday.request :url_encoded
+        # Use FlatParamsEncoder to prevent double encoding of special characters
+        faraday.options.params_encoder = Faraday::FlatParamsEncoder
         faraday.adapter Faraday.default_adapter
         block&.call(faraday)
         faraday.headers = default_headers.merge(faraday.headers)
