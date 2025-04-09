@@ -71,7 +71,7 @@ module StrapiRuby
     def handle_response(response)
       body = convert_json_to_open_struct(response.body)
       case response.status
-      when 200
+      when 200..204
         body
       when 400
         raise BadRequestError.new(body.error.message, response.status)
