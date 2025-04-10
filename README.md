@@ -55,11 +55,11 @@ Following will be the documentation for 1.xx release.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add this line to your application's Gemfile - **make sure to take at least 1.0.1 version**
 
 ```ruby
 # Gemfile
-    gem "strapi_ruby" '~> 1.0.0'
+    gem 'strapi_ruby', '~> 1.0.1'
 ```
 
 Then if you use Rails, run in your terminal to generate a config initializer. Otherwise copy paste and fill the config block.
