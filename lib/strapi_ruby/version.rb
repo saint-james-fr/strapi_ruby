@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 module StrapiRuby
-  VERSION = "0.1.4"
+  VERSION = "1.0.1"
 end

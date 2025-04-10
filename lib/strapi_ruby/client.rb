@@ -40,7 +40,8 @@ module StrapiRuby
                           "User-Agent" => "StrapiRuby/#{StrapiRuby::VERSION}" }
 
       Faraday.new(url: url) do |faraday|
-        faraday.request :url_encoded
+        # Use FlatParamsEncoder to prevent double encoding of special characters
+        faraday.options.params_encoder = Faraday::FlatParamsEncoder
         faraday.adapter Faraday.default_adapter
         block&.call(faraday)
         faraday.headers = default_headers.merge(faraday.headers)
@@ -69,9 +70,9 @@ module StrapiRuby
 
     # rubocop:disable Metrics/AbcSize
     def handle_response(response)
-      body = convert_json_to_open_struct(response.body)
+      body = convert_json_to_open_struct(response.body) unless response.body.empty?
       case response.status
-      when 200
+      when 200, 201
         body
       when 400
         raise BadRequestError.new(body.error.message, response.status)

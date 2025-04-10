@@ -8,6 +8,8 @@ module StrapiRuby
     include Singleton
 
     def to_html(markdown)
+      return "" if markdown.nil?
+      
       markdown_renderer.render(markdown)
     end
 

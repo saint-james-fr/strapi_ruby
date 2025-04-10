@@ -10,6 +10,18 @@
 
 I think it's one of the actual coolest solution for integrating a CMS into Rails for example, so let's dive in!
 
+## Important Notice: Strapi V5 and strapi_ruby
+
+Starting from version >=1.0.0, the StrapiRuby gem is only compatible with Strapi version 5 and above. This update includes significant changes to align with the new response format introduced in Strapi v5. Key changes include:
+
+- **Flattened Response Format**: The `attributes` object has been removed, and fields are now directly part of the `data` object.
+- **ID Handling**: The `id` field has been replaced with `documentId` to uniquely identify resources.
+- **Filter Adjustments**: Filters that previously used `id` should now use `documentId`.
+
+These changes ensure that the StrapiRuby gem takes full advantage of the improvements in Strapi v5, providing a more streamlined and efficient API interaction experience. Please ensure your Strapi server is updated to version 5 or later to use this version of the gem.
+
+Following will be the documentation for 1.xx release.
+
 ## Table of contents
 
 - [Installation](#installation)
@@ -43,14 +55,12 @@ I think it's one of the actual coolest solution for integrating a CMS into Rails
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add this line to your application's Gemfile - **make sure to take at least 1.0.1 version**
 
 ```ruby
 # Gemfile
-    gem "strapi_ruby"
+    gem 'strapi_ruby', '~> 1.0.1'
 ```
-
-
 
 Then if you use Rails, run in your terminal to generate a config initializer. Otherwise copy paste and fill the config block.
 
@@ -105,9 +115,9 @@ data = answer.data
 meta = answer.meta
 
 # Access a specific attribute
-answer = StrapiRuby.get(resource: :articles, id: 2)
+answer = StrapiRuby.get(resource: :articles, document_id: "clkgylmcc000008lcdd868feh")
 article = answer.data
-title = article.attributes.title
+title = article.title
 
 # If an error occur, it will be raised to be rescued and displayed in the answer.
 data = answer.data # => nil
@@ -125,7 +135,7 @@ answer = StrapiRuby.get(resource: :restaurants)
 
 
 # Get a specific element
-StrapiRuby.get(resource: :restaurants, id: 1)
+StrapiRuby.get(resource: :restaurants, document_id: "clkgylmcc000008lcdd868feh")
 ```
 
 #### .post
@@ -143,7 +153,7 @@ StrapiRuby.post(resource: :articles,
 ```ruby
 # Update a specific item, return item updated
 StrapiRuby.put(resource: :articles,
-               id: 23,
+               document_id: "clkgylmcc000008lcdd868feh",
                data: {content: "'I've edited this article via a PUT request'"})
 ```
 
@@ -151,7 +161,7 @@ StrapiRuby.put(resource: :articles,
 
 ```ruby
 # Delete an item, return item deleted
-StrapiRuby.delete(resource: :articles, id: 12)
+StrapiRuby.delete(resource: :articles, document_id: "clkgylmcc000008lcdd868feh")
 
 ```
 
@@ -176,7 +186,7 @@ end
   <ul>
     <% @articles.data.each do |article| %>
       <li>
-        <%= article.attributes.title %>
+        <%= article.title %>
       </li>
     <% end %>
   </ul>
@@ -324,11 +334,11 @@ StrapiRuby.get(resource: :users, filters: { username: { "$eq" => "John" } })
 # Using $in operator to match multiples values
 StrapiRuby.get(resource: :restaurants,
                filters: {
-                 id: {
-                   "$in" => ["3", "6", "8"],
+                 documentId: {
+                   "$in" => ["clkgylmcc000008lcdd868feh", "clkgylw7d000108lc4rw1bb6s"],
                  },
                })
-# => /restaurants?filters[id][$in][0]=3&filters[id][$in][1]=6&filters[id][$in][2]=8
+# => /restaurants?filters[documentId][$in][0]=clkgylmcc000008lcdd868feh&filters[documentId][$in][0]=clkgylw7d000108lc4rw1bb6s
 
 # --------------------------------
 
