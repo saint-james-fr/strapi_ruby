@@ -4,7 +4,7 @@
 <img src="assets/strapi_ruby_logo.png" width="150px">
 </div>
 
-**StrapiRuby** is a Ruby wrapper around Strapi REST API, version 4. It has not been tested with previous versions.
+**StrapiRuby** is a Ruby wrapper around Strapi REST API, version 5. Version 4 will need <1.0.0 versino of this gem to work. From 1.0.1, it's only compatible with version 5.
 
 **Strapi** is an open-source, Node.js based, Headless CMS to easily build customizable APIs.
 
