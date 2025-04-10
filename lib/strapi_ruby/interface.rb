@@ -30,8 +30,10 @@ module StrapiRuby
       validate_options(options)
       @endpoint = build_endpoint(options)
       answer = build_answer(http_verb, @endpoint, options)
-      data = format_data(answer.data, options)
-      meta = answer.meta
+      if answer
+        data = format_data(answer.data, options) unless answer.data.nil?
+        meta = answer.meta unless answer.meta.nil?
+      end
 
       return_success_open_struct(data, meta, options)
     rescue StrapiRuby::ClientError, StrapiRuby::ConfigurationError => e

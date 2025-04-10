@@ -17,7 +17,6 @@ RSpec.describe StrapiRuby::Config do
         config.strapi_server_uri = "https://example.com"
         config.strapi_token = "124"
         config.faraday = faraday_string
-        p config
         expect { config.call }.to raise_error(TypeError)
       end
     end

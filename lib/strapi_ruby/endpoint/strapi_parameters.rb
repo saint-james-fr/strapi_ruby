@@ -114,12 +114,11 @@ module StrapiRuby
               traverse_hash({ index => item }, current_key)
             end
           else
-            # We can pass values as symbols but we need to convert them to string
-            # to be able to escape them
             value = value.to_s if value.is_a?(Symbol)
+            next if value.nil? # Skip nil values
             "#{current_key}=#{CGI.escape(value)}"
           end
-        end.join("&")
+        end.compact.join("&")
       end
     end
   end

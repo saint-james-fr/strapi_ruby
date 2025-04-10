@@ -3,7 +3,7 @@ module StrapiRuby
     class Builder
       def initialize(options = {})
         @resource = options[:resource]
-        @id = options[:id]
+        @document_id = options[:document_id]
         @query = Query.new(options).call
         @result = nil
       end
@@ -20,7 +20,7 @@ module StrapiRuby
         @result = if collection?
                     "#{base_uri}/#{@resource}"
                   else
-                    "#{base_uri}/#{@resource}/#{@id}"
+                    "#{base_uri}/#{@resource}/#{@document_id}"
                   end
       end
 
@@ -29,7 +29,7 @@ module StrapiRuby
       end
 
       def collection?
-        @id.nil?
+        @document_id.nil?
       end
 
       def base_uri
