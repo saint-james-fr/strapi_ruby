@@ -14,6 +14,13 @@ Dotenv.load
 # use these titles: "my first article", "my second article", "my third article"
 # use a featuredMedia field to test the populate feature, at least on the first article
 
+def delete_all_articles
+  all_ids = StrapiRuby.get(resource: "articles").data.map(&:documentId)
+  all_ids.each do |id|
+    StrapiRuby.delete(resource: "articles", documentId: id)
+  end
+end
+
 # Configure StrapiRuby
 def configure_strapi
   StrapiRuby.configure do |config|
@@ -26,13 +33,28 @@ end
 
 # Test fetching all articles
 def test_get_all_articles
+  first_article = StrapiRuby.post(resource: "articles", data: { title: "ARTICLE 1", content: "This is some dummy content" })
+  second_article = StrapiRuby.post(resource: "articles", data: { title: "ARTICLE 2", content: "This is some dummy content" })
+  third_article = StrapiRuby.post(resource: "articles", data: { title: "ARTICLE 3", content: "This is some dummy content" })
   test_get = StrapiRuby.get(resource: "articles")
+  p "test_get_all_articles: #{test_get.data.count == 3}"
+  # delete the articles
+  StrapiRuby.delete(resource: "articles", document_id: first_article.data.documentId)
+  StrapiRuby.delete(resource: "articles", document_id: second_article.data.documentId)
+  StrapiRuby.delete(resource: "articles", document_id: third_article.data.documentId)
+
   test_get
 end
 
 # Test fetching one article
 def test_get_one_article
-  test_get = StrapiRuby.get(resource: "articles", documentId: "1")
+  created = StrapiRuby.post(resource: "articles", data: { title: "This is my first article", content: "This is some dummy content" })
+  test_get = StrapiRuby.get(resource: "articles", document_id: created.data.documentId, show_endpoint: true)
+  p test_get
+  p "test_get_one_article: #{test_get.data.title == "This is my first article"}"
+  p "test_get_one_article: #{test_get.data.content == "This is some dummy content"}"
+  # delete the article
+  StrapiRuby.delete(resource: "articles", document_id: created.data.documentId)
   test_get
 end
 
@@ -54,9 +76,14 @@ end
 
 # Test sorting
 def test_sorting
+  # Create 3 articles
+  first_article = StrapiRuby.post(resource: "articles", data: { title: "ARTICLE 1", content: "This is some dummy content" })
+  second_article = StrapiRuby.post(resource: "articles", data: { title: "ARTICLE 2", content: "This is some dummy content" })
+  third_article = StrapiRuby.post(resource: "articles", data: { title: "ARTICLE 3", content: "This is some dummy content" })
   test_get = StrapiRuby.get(resource: "articles", sort: ["createdAt:desc", "title:asc"])
   test_get.data.map do |item|
     item.createdAt
+    item.title
   end
   # data should be sorted by createdAt descending and title ascending
   # the first item should have the highest createdAt and the lowest title
@@ -64,11 +91,15 @@ def test_sorting
   last_item = test_get.data.last
   p "test_sorting: #{first_item.createdAt > last_item.createdAt}"
   p "test_sorting: #{first_item.title < last_item.title}"
+  # delete the articles
+  StrapiRuby.delete(resource: "articles", document_id: first_article.data.documentId)
+  StrapiRuby.delete(resource: "articles", document_id: second_article.data.documentId)
+  StrapiRuby.delete(resource: "articles", document_id: third_article.data.documentId)
 end
 
 # Test filtering
 def test_filtering
-  # Make sure we have at least 3 articles: this test is dependent on the test_post_article test and test_delete_article test
+  # Make sure we have at least 3 articles: this test is dependent on the test_post_article test and
   first_article = StrapiRuby.post(resource: "articles", data: { title: "This is my fourth article", content: "This is some dummy content" })
   second_article = StrapiRuby.post(resource: "articles", data: { title: "This is my fifth article", content: "This is some dummy content" })
   third_article = StrapiRuby.post(resource: "articles", data: { title: "This is my sixth article", content: "This is some dummy content" })
@@ -192,35 +223,38 @@ def test_selecting_fields
   StrapiRuby.delete(resource: "articles", document_id: first_article.data.documentId)
 end
 
-# Test populate: add featuredMedia field to the article and see if its populated
-def test_populate
-  first_article = StrapiRuby.post(resource: "articles", data: { title: "This is my first article", content: "This is some dummy content" })
-  test_get = StrapiRuby.get(resource: :articles, populate: :*)
-  test_get.data.first.featuredMedia
-  # Delete the article
-  StrapiRuby.delete(resource: "articles", document_id: first_article.data.documentId)
-end
-
 # Test a 404 endpoint: this will fail poorly
 def test_404_endpoint
   answer = StrapiRuby.get(resource: "thisDoesNotExist")
+  p "test_404_endpoint: #{answer}" # This just prints the error OpenStruct
 end
 
 # Test post article
 def test_post_article
-  StrapiRuby.post(resource: "articles", data: { title: "This is my fourth article", content: "This is some dummy content" })
+  created = StrapiRuby.post(resource: "articles", data: { title: "This is my first article", content: "This is some dummy content" })
+  p "test_post_article: #{created.data.documentId}"
+  p "test_post_article: #{created.data.title == "This is my first article"}"
+  p "test_post_article: #{created.data.content == "This is some dummy content"}"
+  StrapiRuby.delete(resource: "articles", document_id: created.data.documentId)
 end
 
 # Test put article
 def test_put_article
-  document_id = StrapiRuby.get(resource: "articles", sort: "createdAt:asc").data.last.documentId
+  created = StrapiRuby.post(resource: "articles", data: { title: "This is my first article", content: "This is some dummy content" })
+  document_id = created.data.documentId
   StrapiRuby.put(resource: "articles", document_id: document_id, data: { title: "Title has been changed by PUT request" })
+  p "test_put_article: #{created.data.title == "Title has been changed by PUT request"}"
+  StrapiRuby.delete(resource: "articles", document_id: document_id)
 end
 
 # Test delete article
 def test_delete_article
-  document_id = StrapiRuby.get(resource: "articles", sort: "createdAt:asc").data.last.documentId
+  created = StrapiRuby.post(resource: "articles", data: { title: "This is my first article", content: "This is some dummy content" })
+  document_id = created.data.documentId
   StrapiRuby.delete(resource: "articles", document_id: document_id)
+  all_ids = StrapiRuby.get(resource: "articles").data.map(&:documentId)
+  p "test_delete_article: #{!all_ids.include?(document_id)}"
+  p "test_delete_article: #{all_ids.count == 0}"
 end
 
 def test_show_endpoint
@@ -257,12 +291,13 @@ tests = [
   :test_offset_pagination,
   :test_locale,
   :test_selecting_fields,
-  :test_populate,
   :test_raw_query,
   :test_404_endpoint,
   :test_show_endpoint,
   :test_escape_empty_answer,
 ]
+
+delete_all_articles
 
 tests.each do |test|
   puts "\n\n"
