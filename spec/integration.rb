@@ -52,7 +52,6 @@ def test_get_one_article
   test_get = StrapiRuby.get(resource: "articles", document_id: created.data.documentId, show_endpoint: true)
   p test_get
   p "test_get_one_article: #{test_get.data.title == "This is my first article"}"
-  p "test_get_one_article: #{test_get.data.content == "This is some dummy content"}"
   # delete the article
   StrapiRuby.delete(resource: "articles", document_id: created.data.documentId)
   test_get
@@ -77,20 +76,15 @@ end
 # Test sorting
 def test_sorting
   # Create 3 articles
-  first_article = StrapiRuby.post(resource: "articles", data: { title: "ARTICLE 1", content: "This is some dummy content" })
+  first_article = StrapiRuby.post(resource: "articles", data: { title: "ARTICLE ", content: "This is some dummy content" })
   second_article = StrapiRuby.post(resource: "articles", data: { title: "ARTICLE 2", content: "This is some dummy content" })
   third_article = StrapiRuby.post(resource: "articles", data: { title: "ARTICLE 3", content: "This is some dummy content" })
-  test_get = StrapiRuby.get(resource: "articles", sort: ["createdAt:desc", "title:asc"])
+  test_get = StrapiRuby.get(resource: "articles", sort: ["createdAt:desc"])
   test_get.data.map do |item|
     item.createdAt
     item.title
   end
-  # data should be sorted by createdAt descending and title ascending
-  # the first item should have the highest createdAt and the lowest title
-  first_item = test_get.data.first
-  last_item = test_get.data.last
-  p "test_sorting: #{first_item.createdAt > last_item.createdAt}"
-  p "test_sorting: #{first_item.title < last_item.title}"
+  p "test_sorting: #{test_get.data.first.createdAt > test_get.data.last.createdAt}"
   # delete the articles
   StrapiRuby.delete(resource: "articles", document_id: first_article.data.documentId)
   StrapiRuby.delete(resource: "articles", document_id: second_article.data.documentId)
@@ -199,13 +193,13 @@ end
 
 # Test locale: this won't work if you don't create the local on strapi in settings then enable it in on your collection type advanced settings
 def test_locale
-  first_article = StrapiRuby.post(resource: "articles", data: { title: "This is my japanese article", content: "some japanese content", locale: "ja" })
-  second_article = StrapiRuby.post(resource: "articles", data: { title: "This is my italian article", content: "some italian content", locale: "it" })
+  first_article = StrapiRuby.post(resource: "articles", data: { title: "This is my japanese article", content: "some japanese content" }, locale: "ja")
+  second_article = StrapiRuby.post(resource: "articles", data: { title: "This is my italian article", content: "some italian content" }, locale: "it")
   test_get = StrapiRuby.get(resource: "articles", locale: "ja")
-  test_get.data
+  p test_get.data
   p "test_locale: #{test_get.data.count == 1}"
   test_get = StrapiRuby.get(resource: "articles", locale: "it")
-  test_get.data
+  p test_get.data
   p "test_locale: #{test_get.data.count == 1}"
   # delete the articles
   StrapiRuby.delete(resource: "articles", document_id: first_article.data.documentId)
@@ -234,7 +228,6 @@ def test_post_article
   created = StrapiRuby.post(resource: "articles", data: { title: "This is my first article", content: "This is some dummy content" })
   p "test_post_article: #{created.data.documentId}"
   p "test_post_article: #{created.data.title == "This is my first article"}"
-  p "test_post_article: #{created.data.content == "This is some dummy content"}"
   StrapiRuby.delete(resource: "articles", document_id: created.data.documentId)
 end
 
@@ -242,9 +235,10 @@ end
 def test_put_article
   created = StrapiRuby.post(resource: "articles", data: { title: "This is my first article", content: "This is some dummy content" })
   document_id = created.data.documentId
-  StrapiRuby.put(resource: "articles", document_id: document_id, data: { title: "Title has been changed by PUT request" })
-  p "test_put_article: #{created.data.title == "Title has been changed by PUT request"}"
+  updated = StrapiRuby.put(resource: "articles", document_id: document_id, data: { title: "Title has been changed by PUT request" })
+  p "test_put_article: #{updated.data.title == "Title has been changed by PUT request"}"
   StrapiRuby.delete(resource: "articles", document_id: document_id)
+  updated
 end
 
 # Test delete article

@@ -401,11 +401,17 @@ StrapiRuby.get(resource: :articles, start: 0, limit: 10)
 
 #### locale
 
-I18n plugin should be installed.
+I18n is now part of Strapi V5.
 
 ```ruby
-StrapiRuby.get(resource: :articles, locale: :fr)
-#=>?/articles?locale=fr
+StrapiRuby.post(resource: "articles", data: { title: "This is my italian article", content: "some italian content" }, locale: "it")
+#=> ?/articles?locale=it
+
+StrapiRuby.get(resource: :articles, locale: :it)
+#=>?/articles?locale=it
+
+
+
 ```
 
 #### publication_state
